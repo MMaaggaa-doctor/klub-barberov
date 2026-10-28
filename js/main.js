@@ -72,13 +72,11 @@
   }, { threshold: .6 });
   $$('[data-count]').forEach(function (el) { cio.observe(el); });
 
-  /* ---------- FOUNDER PHOTO (показываем, только если файл добавлен) ---------- */
-  var fo = $('#founder');
-  if (fo) {
-    var im = new Image();
-    im.onload = function () { fo.hidden = false; };
-    im.src = $('img', fo).getAttribute('src');
-  }
+  /* ---------- ФОТО ТЕЙМУРА и ЛОГО: показываем, только если файл добавлен ---------- */
+  var me = $('#hero-me');
+  if (me) { var im = new Image(); im.onload = function () { me.hidden = false; }; im.src = me.getAttribute('src'); }
+  var lm = $('#logo-mark');
+  if (lm) { var lg = new Image(); lg.onload = function () { lm.innerHTML = ''; lg.alt = ''; lm.appendChild(lg); }; lg.src = (document.body.dataset.root || './') + 'assets/img/logo.png'; }
 
   /* ---------- FAQ ---------- */
   $$('.faq-item').forEach(function (item) {
@@ -150,8 +148,30 @@
     });
     phone.addEventListener('mouseleave', function () { phone.style.transform = ''; });
   }
+  /* ---------- ГАЛЕРЕЯ СКРИНШОТОВ ЧАТА (файлы перечислены в js/config.js) ---------- */
+  var shotsBox = $('#chat-shots'), shotList = cfg.CHAT_SHOTS || [];
+  if (shotsBox && shotList.length) {
+    var strack = $('#shots-track'), scount = $('#shots-count');
+    shotList.forEach(function (src, i) {
+      var im = document.createElement('img');
+      im.src = src; im.alt = 'Скриншот из закрытого чата Клуба, ' + (i + 1) + ' из ' + shotList.length;
+      im.decoding = 'async'; if (i > 0) im.loading = 'lazy'; im.draggable = false;
+      strack.appendChild(im);
+    });
+    shotsBox.hidden = false;
+    var demo = $('#chat-body'); if (demo) demo.hidden = true;
+    var note = $('#chat-note'); if (note) note.textContent = 'Реальные скриншоты из закрытого чата — листайте';
+    var cur = function () { return Math.round(strack.scrollLeft / strack.clientWidth); };
+    var go = function (n) { n = Math.max(0, Math.min(shotList.length - 1, n)); strack.scrollTo({ left: n * strack.clientWidth, behavior: reduce ? 'auto' : 'smooth' }); };
+    var upc = function () { scount.textContent = (cur() + 1) + ' / ' + shotList.length; };
+    strack.addEventListener('scroll', upc, { passive: true }); upc();
+    $('#shots-prev').addEventListener('click', function () { go(cur() - 1); });
+    $('#shots-next').addEventListener('click', function () { go(cur() + 1 >= shotList.length ? 0 : cur() + 1); });
+    strack.addEventListener('keydown', function (e) { if (e.key === 'ArrowRight') go(cur() + 1); if (e.key === 'ArrowLeft') go(cur() - 1); });
+  }
+
   var bubs = $$('#chat-body .bub');
-  if (bubs.length) {
+  if (bubs.length && !(shotList && shotList.length)) {
     var playing = false;
     function play() {
       if (playing) return; playing = true;
@@ -177,7 +197,8 @@
       var now = price * fill * days, full = price * max * days;
       $('#r-now').textContent = fmt(now); $('#r-full').textContent = fmt(full); $('#r-gap').textContent = fmt(full - now);
       $('#r-add').textContent = fmt(price * 10) + ' – ' + fmt(price * 15);
-      $('#r-pay').textContent = Math.max(1, Math.ceil(2690 / price));
+      var club = +cfg.CLUB_PRICE || 3690;
+      $('#r-club').textContent = club; $('#r-pay').textContent = Math.max(1, Math.ceil(club / price));
     };
     [cp, cf, cm, cd].forEach(function (i) { i.addEventListener('input', calc); });
     calc();

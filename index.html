@@ -43,7 +43,7 @@
 <header>
 <nav class="nav" aria-label="Главная навигация">
   <a href="#top" class="logo" title="Клуб Барберов — в начало страницы">
-    <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M4 4h32l-4 32H8z" fill="#F3CC0E"/><text x="20" y="27" text-anchor="middle" font-size="17" fill="#0D0D0D" font-family="'NAMU 1990',sans-serif">КБ</text></svg>
+    <span class="logo-mark" id="logo-mark" aria-hidden="true">КБ</span>
     Клуб Барберов
   </a>
   <ul class="nav-links" id="nav-links" role="list">
@@ -52,8 +52,8 @@
     <li><a href="#features" title="Перейти к разделу Что внутри">Что внутри</a></li>
     <li><a href="#reviews" title="Перейти к отзывам">Отзывы</a></li>
     <li><a href="#pricing" title="Перейти к тарифам">Тарифы</a></li>
-    <li><a href="./materials.html" title="Полезные материалы для барберов">Материалы</a></li>
-    <li><a href="#faq" title="Перейти к частым вопросам">FAQ</a></li>
+    <li><a href="./materials.html" title="Бесплатные уроки для барберов">Бесплатные уроки</a></li>
+    <li><a href="#faq" title="Перейти к ответам на вопросы">Ответы на вопросы</a></li>
   </ul>
   <a href="https://t.me/teymur_barber/4397" class="btn nav-cta" target="_blank" rel="noopener noreferrer" title="Вступить в Клуб через Telegram">Вступить</a>
   <button type="button" class="burger" aria-expanded="false" aria-controls="nav-links" aria-label="Открыть или закрыть меню"><span></span></button>
@@ -66,23 +66,19 @@
     <p class="hero-tagline">Мы работаем на ваш успех</p>
     <p class="hero-sub">Начните стричь быстрее и лучше, вести соц сети и заполните <b>10–15 окон</b> клиентами уже в первый месяц.</p>
     <div class="hero-btns">
-      <a href="#features" class="btn" data-magnet title="Перейти к разделу Что внутри">Узнать подробнее <svg><use href="#i-arrow"/></svg></a>
-      <a href="#calc" class="btn btn-ghost" title="Посчитать доход с полной записью">Посчитать доход</a>
+      <a href="#features" class="btn" data-magnet title="Перейти к разделу О клубе">О клубе <svg><use href="#i-arrow"/></svg></a>
+      <a href="#calc" class="btn btn-ghost" title="Посчитать свой доход с полной записью">Посчитать свой доход</a>
     </div>
   </div>
   <div class="hero-vis">
     <img class="photo" src="./assets/img/hero-barber.jpg" alt="Барбер за работой" fetchpriority="high" decoding="async" width="900" height="600">
-    <div class="founder" id="founder" hidden>
-      <img src="./assets/img/teymur.jpg" alt="Теймур — Клуб Барберов" width="52" height="52">
-      <div><strong>Теймур</strong><small>Клуб Барберов</small></div>
-    </div>
+    <img class="hero-me" id="hero-me" src="./assets/img/teymur.jpg" alt="Теймур — основатель Клуба Барберов" width="700" height="900" hidden>
   </div>
-  <div class="m3d" data-depth="0.05" data-spin aria-hidden="true"><div class="m3d-spot"></div><img src="./assets/3d/suit_barber.webp" alt="" width="470" height="470" decoding="async"></div>
-  <div class="hero-stats">
-    <div><b data-count="200" data-suffix="+">0</b>уроков</div>
-    <div><b data-count="24" data-suffix="/7">0</b>поддержка</div>
-    <div><b data-count="30">0</b>дней гарантия</div>
-    <div><b data-count="50" data-suffix="%">0</b>партнёрка</div>
+  <div class="vsl" id="vsl">
+    <div class="vsl-frame" role="img" aria-label="Здесь будет видео о Клубе">
+      <button type="button" class="vsl-play" aria-label="Видео скоро появится" disabled><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+      <span class="vsl-cap">Видео о Клубе скоро здесь</span>
+    </div>
   </div>
   <div class="scroll-cue" aria-hidden="true"></div>
 </section>
@@ -92,16 +88,16 @@
 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track">
-    <div class="ticker-set"><span>200+ уроков</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
-    <div class="ticker-set"><span>200+ уроков</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
-    <div class="ticker-set"><span>200+ уроков</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
-    <div class="ticker-set"><span>200+ уроков</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
+    <div class="ticker-set"><span>Раскрученные соц сети</span><i></i><span>Клуб работает на ваш успех</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
+    <div class="ticker-set"><span>Раскрученные соц сети</span><i></i><span>Клуб работает на ваш успех</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
+    <div class="ticker-set"><span>Раскрученные соц сети</span><i></i><span>Клуб работает на ваш успех</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
+    <div class="ticker-set"><span>Раскрученные соц сети</span><i></i><span>Клуб работает на ваш успех</span><i></i><span>Закрытый чат</span><i></i><span>Полная запись</span><i></i><span>Личный бренд</span><i></i><span>Поддержка 24/7</span><i></i><span>Гарантия 30 дней</span><i></i><span>Найти клиентов — легко</span><i></i></div>
   </div>
 </div>
 
 <!-- PAIN -->
 <section class="pain" id="about">
-  <div class="m3d" data-depth="0.04" aria-hidden="true" style="--r0:6deg;--r1:-6deg"><img src="./assets/3d/deco-extra-02.webp" alt="" width="300" height="245" loading="lazy" decoding="async"></div>
+  <div class="m3d" data-depth="0.04" aria-hidden="true" style="--r0:4deg;--r1:-4deg"><img src="./assets/3d/scissors-pro.webp" alt="" width="260" height="290" loading="lazy" decoding="async"></div>
   <div class="wrap">
     <h2><span class="mask" data-mask><span>Если вам:</span></span></h2>
     <ul class="pain-list">
@@ -112,7 +108,7 @@
     </ul>
     <div class="pain-end rv">
       <h3>То вы в правильном месте.</h3>
-      <p>90 процентов мастеров в первые годы практики сталкиваются с этим. И если не менять подход к обучению — то результат останется тем же.</p>
+      <p>Мы поможем вам забить пустые окна клиентами, стабильно вести соц сети и прокачать свои стрижки.</p>
     </div>
   </div>
 </section>
@@ -120,50 +116,33 @@
 <!-- PILLARS -->
 <section class="pillars" id="pillars">
   <div class="wrap">
-    <span class="tag rv">Система обучения</span>
-    <h2><span class="mask" data-mask><span>Три столпа мастерства</span></span></h2>
-    <p class="lead rv">Клуб барберов — это то место, где вы сможете освоить профессию целиком, изучив 3 главных элемента.</p>
+    <h2 class="pillars-title"><span class="mask" data-mask><span>Вы научитесь привлекать клиентов на личный бренд и начнёте влиять на запись, начнёте быстрее и лучше стричь, прокачаете сервис и увеличите возвращаемость клиентов</span></span></h2>
     <div class="pillars-row">
       <article class="pillar rv" data-tilt="9">
         <div class="pillar-num">I</div>
-        <h3>Привлечение и возврат клиентов</h3>
-        <p>Привлечение, удержание, сарафан. Системный подход к заполнению расписания и росту дохода.</p>
+        <h3>Привлечение клиентов</h3>
+        <p>Плотная запись на ваши услуги, увеличение ценника и дохода</p>
         <div class="obj" aria-hidden="true"><img src="./assets/3d/unnamed.webp" alt="" width="400" height="323" loading="lazy" decoding="async"></div>
       </article>
       <article class="pillar rv" data-tilt="9" style="--d:.1s">
         <div class="pillar-num">II</div>
         <h3>Техника стрижки</h3>
-        <p>Все виды стрижек — от клиентских до модельных. Фейды, удлинённые дизайны и нестандартные запросы клиентов.</p>
+        <p>Научитесь работать с любыми референсами — от потоковых до модельных запросов</p>
         <div class="obj" aria-hidden="true"><img src="./assets/3d/deco-mum.webp" alt="" width="400" height="459" loading="lazy" decoding="async"></div>
       </article>
       <article class="pillar rv" data-tilt="9" style="--d:.2s">
         <div class="pillar-num">III</div>
-        <h3>Клиентский сервис, стиль и личный бренд</h3>
-        <p>Коммуникация с клиентами, психология, личный стиль. Станешь специалистом, к которому хотят вернуться.</p>
+        <h3>Клиентский сервис</h3>
+        <p>Уверенность с клиентами и личный бренд, который приводит людей как магнит</p>
         <div class="obj" aria-hidden="true"><img src="./assets/3d/suit.webp" alt="" width="400" height="464" loading="lazy" decoding="async"></div>
       </article>
     </div>
   </div>
 </section>
 
-<!-- RESULTS -->
-<section class="results" id="results">
-  <div class="m3d" data-depth="0.05" aria-hidden="true"><div class="m3d-spot"></div><img src="./assets/3d/long_hair.webp" alt="" width="330" height="446" loading="lazy" decoding="async"></div>
-  <div class="wrap results-grid">
-    <div>
-      <h2><span class="mask" data-mask><span>Обучаясь по нашей системе вы увидите конкретные изменения:</span></span></h2>
-      <div class="results-after rv">
-        <strong>Вы станете уверенным топ-барбером, который работает на высоком чеке</strong>
-        <a href="https://t.me/teymur_barber/4397" class="btn" data-magnet target="_blank" rel="noopener noreferrer" title="Начать прямо сейчас в Telegram">Начать прямо сейчас <svg><use href="#i-arrow"/></svg></a>
-      </div>
-    </div>
-    <ul class="res-list">
-      <li class="res-item rv"><span class="res-check"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span>Плотную запись на ваши услуги</span></li>
-      <li class="res-item rv" style="--d:.08s"><span class="res-check"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span>Узнаваемый личный бренд и рабочее сарафанное радио</span></li>
-      <li class="res-item rv" style="--d:.16s"><span class="res-check"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span>Довольных клиентов, которые приходят снова</span></li>
-      <li class="res-item rv" style="--d:.24s"><span class="res-check"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></span><span>Устойчивый навык стрижки и способность решать нестандартные ситуации</span></li>
-    </ul>
-  </div>
+<!-- SLOGAN -->
+<section class="slogan" aria-label="Главная идея Клуба">
+  <div class="wrap"><p class="slogan-text rv">Пока другие учат барберов хорошо стричь, Клуб учит их <mark>стабильно зарабатывать</mark></p></div>
 </section>
 
 <!-- CLOSED CHAT -->
@@ -174,6 +153,14 @@
         <div class="m3d" data-depth="0.06" aria-hidden="true" style="--r0:-8deg;--r1:6deg"><div class="m3d-spot"></div><img src="./assets/3d/deco-extra-01.webp" alt="" width="200" height="211" loading="lazy" decoding="async"></div>
         <div class="phone-scr">
           <div class="phone-top"><span class="ava">КБ</span><div><b>Закрытый чат Клуба</b><small>поддержка 24/7</small></div></div>
+          <div class="phone-shots" id="chat-shots" hidden>
+            <div class="shots-track" id="shots-track" tabindex="0" aria-label="Скриншоты из закрытого чата"></div>
+            <div class="shots-ui">
+              <button type="button" class="shots-btn" id="shots-prev" aria-label="Предыдущий скриншот"><svg viewBox="0 0 24 24" style="transform:scaleX(-1)"><use href="#i-arrow"/></svg></button>
+              <span class="shots-count" id="shots-count" aria-live="polite">1 / 1</span>
+              <button type="button" class="shots-btn" id="shots-next" aria-label="Следующий скриншот"><svg viewBox="0 0 24 24"><use href="#i-arrow"/></svg></button>
+            </div>
+          </div>
           <div class="phone-body" id="chat-body" aria-hidden="true">
             <div class="bub them"><small>Клуб</small>Новый урок по удлинённым стрижкам уже в материалах</div>
             <div class="bub me">Отправил фото своей работы</div>
@@ -183,17 +170,16 @@
           </div>
         </div>
       </div>
-      <p class="chat-note">Пример того, как работает чат</p>
+      <p class="chat-note" id="chat-note">Пример того, как работает чат</p>
     </div>
     <div>
       <span class="tag rv">Закрытый чат Клуба</span>
-      <h2><span class="mask" data-mask><span>Здесь происходит всё самое главное</span></span></h2>
-      <p class="lead rv">В закрытом чате участники Клуба получают разбор, поддержку и ответы на рабочие вопросы — каждый день.</p>
+      <h2 class="chat-title"><span class="mask" data-mask><span>В закрытом чате участники Клуба получают разбор, поддержку и ответы на рабочие вопросы — каждый день.</span></span></h2>
       <ul class="chat-list">
-        <li class="rv"><svg fill="none" stroke-width="1.6"><use href="#i-cam"/></svg><div><b>Разбор ваших стрижек</b><span>Отправляйте фото или видео работ и процесса — преподаватели 24/7 подскажут, как улучшить навык.</span></div></li>
-        <li class="rv" style="--d:.08s"><svg fill="none" stroke-width="1.6"><use href="#i-life"/></svg><div><b>Поддержка и советы</b><span>Помогаем с любыми рабочими вопросами.</span></div></li>
-        <li class="rv" style="--d:.16s"><svg fill="none" stroke-width="1.6"><use href="#i-play"/></svg><div><b>Видеоурок по запросу</b><span>Расскажите, что именно не получается, — снимем урок.</span></div></li>
-        <li class="rv" style="--d:.24s"><svg fill="none" stroke-width="1.6"><use href="#i-users"/></svg><div><b>Сообщество</b><span>Обмен опытом, поиск коллег из твоего города и безудержный фан.</span></div></li>
+        <li class="rv"><svg fill="none" stroke-width="1.6"><use href="#i-cam"/></svg><div><b>Разбор ваших стрижек</b><span>Отправляйте свои работы — преподаватели дадут оценку и подскажут, что улучшить</span></div></li>
+        <li class="rv" style="--d:.08s"><svg fill="none" stroke-width="1.6"><use href="#i-users"/></svg><div><b>Сообщество</b><span>Обмен опытом, коллеги из твоего города, поддержка и веселье</span></div></li>
+        <li class="rv" style="--d:.16s"><svg fill="none" stroke-width="1.6"><use href="#i-life"/></svg><div><b>Поддержка и советы</b><span>Помогаем с любыми вопросами</span></div></li>
+        <li class="rv" style="--d:.24s"><svg fill="none" stroke-width="1.6"><use href="#i-play"/></svg><div><b>Видеоурок по запросу</b><span>Расскажите, что именно не получается, — снимем урок или скинем тот, что есть</span></div></li>
       </ul>
       <a href="https://t.me/teymur_barber/4397" class="btn" data-magnet target="_blank" rel="noopener noreferrer" title="Попасть в закрытый чат через Telegram">Попасть в чат <svg><use href="#i-arrow"/></svg></a>
     </div>
@@ -204,19 +190,19 @@
 <section class="calc" id="calc">
   <div class="wrap">
     <span class="tag rv">Калькулятор</span>
-    <h2><span class="mask" data-mask><span>Посчитай свою запись</span></span></h2>
+    <h2><span class="mask" data-mask><span>Посчитай свой доход с клиентов</span></span></h2>
     <div class="calc-box rv">
       <div class="calc-in">
-        <div class="fld"><label for="c-price">Цена стрижки <output id="o-price">1500 руб.</output></label><input type="range" id="c-price" min="500" max="6000" step="100" value="1500"></div>
-        <div class="fld"><label for="c-fill">Клиентов в день сейчас <output id="o-fill">4</output></label><input type="range" id="c-fill" min="0" max="12" step="1" value="4"></div>
-        <div class="fld"><label for="c-max">Окон в день всего <output id="o-max">8</output></label><input type="range" id="c-max" min="2" max="14" step="1" value="8"></div>
-        <div class="fld"><label for="c-days">Рабочих дней в месяц <output id="o-days">22</output></label><input type="range" id="c-days" min="8" max="30" step="1" value="22"></div>
+        <div class="fld"><label for="c-price"><span>Сколько ты получаешь с 1 стрижки? (зависит от того, работаешь ты на себя или в найме)</span> <output id="o-price">1500 руб.</output></label><input type="range" id="c-price" min="500" max="6000" step="100" value="1500"></div>
+        <div class="fld"><label for="c-fill"><span>Количество твоих клиентов в день сейчас:</span> <output id="o-fill">4</output></label><input type="range" id="c-fill" min="0" max="20" step="1" value="4"></div>
+        <div class="fld"><label for="c-max"><span>Максимум клиентов в день можешь подстричь:</span> <output id="o-max">8</output></label><input type="range" id="c-max" min="2" max="20" step="1" value="8"></div>
+        <div class="fld"><label for="c-days"><span>Количество рабочих дней в месяц:</span> <output id="o-days">22</output></label><input type="range" id="c-days" min="8" max="30" step="1" value="22"></div>
       </div>
       <div class="calc-out" aria-live="polite">
         <div class="out-row"><small>Сейчас в месяц</small><b id="r-now">0</b></div>
         <div class="out-row"><small>При полной записи</small><b id="r-full">0</b></div>
         <div class="out-row big"><small>Каждый месяц недобираешь</small><b id="r-gap">0</b></div>
-        <p class="out-pay">10–15 новых клиентов в месяц — это <b id="r-add">0</b> Подписка в 2690 рублей окупается с <b id="r-pay">2</b> клиентов.</p>
+        <p class="out-pay">10–15 новых клиентов в месяц — это дополнительные <b id="r-add">0</b> Подписка на Клуб <span id="r-club">3690</span> рублей окупается с <b id="r-pay">3</b> клиентов.</p>
       </div>
     </div>
     <p class="calc-disc">Расчёт ориентировочный: он показывает потенциал вашего расписания и не гарантирует доход.</p>
@@ -228,31 +214,31 @@
   <div class="m3d" data-depth="0.05" aria-hidden="true" style="--r0:8deg;--r1:-4deg"><img src="./assets/3d/deco-hyh.webp" alt="" width="200" height="373" loading="lazy" decoding="async"></div>
   <div class="wrap">
     <span class="tag rv">Что внутри</span>
-    <h2><span class="mask" data-mask><span>Всё необходимое в одном месте</span></span></h2>
+    <h2><span class="mask" data-mask><span>У нас есть всё для вашего роста</span></span></h2>
     <div class="feat-grid">
       <article class="feat rv" data-tilt="6">
-        <div class="feat-img"><img src="./assets/img/feature-04.jpg" alt="Закрытый чат с участниками Клуба" loading="lazy" decoding="async" width="1100" height="733"></div>
-        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-users"/></svg></div><h3>Закрытый чат с участниками Клуба</h3><p>Даём разбор, поддержку и совет по вашим стрижкам 24/7, а также помогаем с любыми рабочими вопросами.</p></div>
+        <div class="feat-img"><img class="feat-3d" src="./assets/3d/deco-extra-01.webp" alt="Закрытый чат Клуба" loading="lazy" decoding="async" style="--del:-0.0s"></div>
+        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-users"/></svg></div><h3>Закрытый чат Клуба</h3><p>Даём оценку стрижкам и разбираем на ошибки 24/7. Помогаем с любыми рабочими вопросами</p></div>
       </article>
-      <article class="feat rv" data-tilt="6" style="--d:.08s">
-        <div class="feat-img"><img src="./assets/img/feature-02.jpg" alt="Блок по продвижению личного бренда" loading="lazy" decoding="async" width="1100" height="783"></div>
-        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-star"/></svg></div><h3>Блок по продвижению личного бренда и привлечению клиентов</h3><p>Скопируй шаблоны и найди новых клиентов без начальника — люди будут записываться напрямую к тебе.</p></div>
+      <article class="feat rv" data-tilt="6" style="--d:0.08s">
+        <div class="feat-img"><img class="feat-3d" src="./assets/3d/suit_barber.webp" alt="Развитие соц сетей и привлечение клиентов" loading="lazy" decoding="async" style="--del:-1.3s"></div>
+        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-star"/></svg></div><h3>Блок по развитию соц сетей и привлечению клиентов</h3><p>Найди первые записи уже в первый месяц и научись поддерживать запись плотной всегда</p></div>
       </article>
-      <article class="feat rv" data-tilt="6" style="--d:.16s">
-        <div class="feat-img"><img src="./assets/img/feature-01.jpg" alt="200+ уроков по всем видам стрижек" loading="lazy" decoding="async" width="734" height="1100" style="object-position:50% 30%"></div>
-        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-play"/></svg></div><h3>200+ уроков по всем видам стрижек</h3><p>Больше не обязательно ездить на дорогие мастер-классы в поисках знаний — у нас есть уроки по всем видам стрижек. Также мы выслушаем, что именно у тебя не получается и снимем урок по запросу.</p></div>
+      <article class="feat rv" data-tilt="6" style="--d:0.16s">
+        <div class="feat-img"><img class="feat-3d" src="./assets/3d/deco-layer-0.webp" alt="Уроки по всем видам стрижек" loading="lazy" decoding="async" style="--del:-2.6s"></div>
+        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-play"/></svg></div><h3>Уроки по всем видам стрижек</h3><p>Внутри шпаргалки, которые можно использовать прямо перед стрижкой клиента. Снимем новые уроки и сделаем шпаргалки под ваш запрос</p></div>
       </article>
       <article class="feat rv" data-tilt="6">
-        <div class="feat-img"><img src="./assets/img/feature-05.jpg" alt="Активное и вовлеченное сообщество" loading="lazy" decoding="async" width="1100" height="733"></div>
-        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-users"/></svg></div><h3>Активное и вовлеченное сообщество</h3><p>Обмен опытом, поиск коллег из твоего города и безудержный фан.</p></div>
+        <div class="feat-img"><img class="feat-3d" src="./assets/3d/long_hair.webp" alt="Сообщество Клуба" loading="lazy" decoding="async" style="--del:-3.9000000000000004s"></div>
+        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-users"/></svg></div><h3>Сообщество без токсичности</h3><p>Обмен опытом, поддержка, поиск коллег и партнёров, а также безудержное веселье</p></div>
       </article>
-      <article class="feat rv" data-tilt="6" style="--d:.08s">
-        <div class="feat-img"><img src="./assets/img/feature-03.jpg" alt="30 дневная гарантия" loading="lazy" decoding="async" width="1100" height="735"></div>
-        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-shield"/></svg></div><h3>30 дневная гарантия</h3><p>Если за месяц участия вы не заметили изменений в стрижках и уверенности - мы полностью вернем деньги.</p></div>
+      <article class="feat rv" data-tilt="6" style="--d:0.08s">
+        <div class="feat-img"><img class="feat-3d" src="./assets/3d/2.webp" alt="Гарантия возврата денег" loading="lazy" decoding="async" style="--del:-5.2s"></div>
+        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-shield"/></svg></div><h3>Гарантия</h3><p>Полностью вернём деньги, если за первый месяц подписки ваши стрижки не станут лучше, а запись — плотнее</p></div>
       </article>
-      <article class="feat rv" data-tilt="6" style="--d:.16s">
-        <div class="feat-img"><img src="./assets/img/feature-06.jpg" alt="Партнёрская программа" loading="lazy" decoding="async" width="1100" height="734"></div>
-        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-gift"/></svg></div><h3>Партнерская программа и возможность зарабатывать на клубе</h3><p>Пригласи коллегу и получи 50% с его подписки: отправим деньги прямо тебе на карту.</p></div>
+      <article class="feat rv" data-tilt="6" style="--d:0.16s">
+        <div class="feat-img"><img class="feat-3d" src="./assets/3d/5.webp" alt="Партнёрская программа" loading="lazy" decoding="async" style="--del:-6.5s"></div>
+        <div class="feat-body"><div class="feat-ico"><svg stroke="currentColor"><use href="#i-gift"/></svg></div><h3>Заработай на Клубе</h3><p>Пригласи напарника и получай 25% с его оплат пожизненно</p></div>
       </article>
     </div>
   </div>
@@ -287,38 +273,40 @@
 <section class="pricing" id="pricing">
   <div class="wrap">
     <span class="tag rv">Тарифы</span>
-    <h2><span class="mask" data-mask><span>Станьте частью сообщества, чтобы расти быстрее!</span></span></h2>
+    <h2 class="pricing-title"><span class="mask" data-mask><span>Станьте частью сообщества, чтобы расти быстрее!</span></span></h2>
     <div class="price-grid">
       <article class="price rv">
-        <h3>Подписка на месяц</h3>
-        <p class="price-desc">Инвестиция — 2690 рублей в месяц. Окупаемость — два довольных клиента.</p>
+        <h3>Участие на месяц</h3>
+        <p class="price-desc">Инвестиция — 3690 рублей в месяц. Окупаемость — два довольных клиента.</p>
         <ul class="price-feats">
-          <li>Готовые шаблоны как найти новых клиентов</li>
-          <li>Блок по личному бренду и продвижению</li>
-          <li>Закрытый чат с участниками Клуба</li>
-          <li>200+ уроков по всем видам стрижек</li>
-          <li>Возможность подать запрос на видеоурок</li>
-          <li>Расширенные материалы по сервису, стилю и общению с клиентами в барбершопе</li>
+          <li>Шаблоны как найти новых клиентов</li>
+          <li>Как вести соц сети без выгорания</li>
+          <li>Закрытый чат с поддержкой</li>
+          <li>Уроки по всем видам стрижек</li>
+          <li>Эксклюзивные материалы для вашего роста</li>
         </ul>
         <a href="https://t.me/teymur_barber/4397" class="btn btn-ghost" target="_blank" rel="noopener noreferrer" title="Выбрать месячный тариф в Telegram">Выбрать <svg><use href="#i-arrow"/></svg></a>
-        <p class="price-after">Полный доступ на 30 дней. Идеально, чтобы попробовать и увидеть первые результаты.</p>
+        <p class="price-after">Вернём деньги в полном объёме, если за первый месяц ваши стрижки не станут лучше, а запись — плотнее</p>
       </article>
       <article class="price hot rv" style="--d:.1s">
         <div class="hot-tag">Скидка 20%</div>
-        <h3>Подписка на год</h3>
-        <p class="price-desc">Инвестиция — 26900 рублей. Окупаемость — пара недель.</p>
+        <h3>Участие на год</h3>
+        <p class="price-desc">Инвестиция — 36900 рублей. Окупаемость — пара недель.</p>
         <ul class="price-feats">
           <li>Два месяца бесплатно</li>
-          <li>Бонус — личная консультация с Теймуром: созвон для взрывного роста в профессии</li>
-          <li>Обычно консультация стоит 29000 рублей, но при покупке годовой подписки — бесплатно</li>
+          <li>Бонус — личная консультация (обычно стоит 30 000 рублей)</li>
         </ul>
         <a href="https://t.me/teymur_barber/4397" class="btn" data-magnet target="_blank" rel="noopener noreferrer" title="Выбрать годовой тариф в Telegram">Выбрать <svg><use href="#i-arrow"/></svg></a>
-        <p class="price-after">Полный доступ на год. Максимальный результат по лучшей цене.</p>
+        <p class="price-after">Для тех, кому нужен системный рост без перерывов</p>
       </article>
+    </div>
+    <div class="trial rv">
+      <div><span class="g-label">Тестовый период</span><h4>Пробная неделя — 369 рублей</h4><p>Попробуйте Клуб неделю и оцените его пользу на практике.</p></div>
+      <a href="https://t.me/teymur_barber/4397" class="btn" data-magnet target="_blank" rel="noopener noreferrer" title="Попробовать неделю Клуба за 369 рублей">Попробовать неделю <svg><use href="#i-arrow"/></svg></a>
     </div>
     <div class="guarantee rv">
       <div class="g-num">30 дней</div>
-      <div><h4>Гарантия возврата денег</h4><p>Полностью вернём деньги за месяц подписки, если за это время вы не увидите изменений в ваших стрижках и уверенности с клиентами.</p></div>
+      <div><span class="g-label">Гарантия возврата денег</span><h4>Нам не нужны ваши деньги, если вы не растёте</h4><p>Вернём деньги в полном объёме, если за первый месяц ваши стрижки не станут лучше, а запись — плотнее</p></div>
     </div>
   </div>
 </section>
@@ -327,8 +315,8 @@
 <section class="mat" id="materials">
   <div class="wrap">
     <div class="mat-head">
-      <div><span class="tag rv">Полезные материалы</span><h2><span class="mask" data-mask><span>Читайте бесплатно</span></span></h2></div>
-      <a href="./materials.html" class="btn btn-ghost" title="Все полезные материалы для барберов">Все материалы <svg><use href="#i-arrow"/></svg></a>
+      <div><span class="tag rv">Бесплатные уроки</span><h2><span class="mask" data-mask><span>Читайте бесплатно</span></span></h2></div>
+      <a href="./materials.html" class="btn btn-ghost" title="Все бесплатные уроки для барберов">Все уроки <svg><use href="#i-arrow"/></svg></a>
     </div>
     <div class="mat-grid">
       <a class="acard rv" href="./materials/kak-zapolnit-okna-v-zapisi.html" title="Как заполнить окна в записи барбера"><div><small>Клиенты</small><h3>Как заполнить окна в записи барбера</h3><p>Простая система, которая помогает расписанию наполняться без постоянной рекламы.</p></div><span>Читать <svg width="14" height="14"><use href="#i-arrow"/></svg></span></a>
@@ -341,7 +329,7 @@
 <!-- FAQ -->
 <section class="faq" id="faq">
   <div class="wrap faq-grid">
-    <div><span class="tag rv">FAQ</span><h2><span class="mask" data-mask><span>Частые вопросы</span></span></h2></div>
+    <div><span class="tag rv">Ответы на вопросы</span><h2><span class="mask" data-mask><span>Частые вопросы</span></span></h2></div>
     <div class="faq-list">
       <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false"><span>Какие уроки есть в клубе?</span><span class="faq-ico"></span></button><div class="faq-a"><div><p>В клубе есть уроки по всем видам стрижек: потоковые запросы клиентов, демонстративные фейды для портфолио и трендовые удлиненки.</p></div></div></div>
       <div class="faq-item"><button class="faq-q" type="button" aria-expanded="false"><span>Как часто выходят уроки по стрижкам?</span><span class="faq-ico"></span></button><div class="faq-a"><div><p>Мы выкладываем от трёх до пяти новых уроков в месяц.</p></div></div></div>
@@ -382,11 +370,11 @@
   <div class="wrap">
     <a href="#top" class="logo" title="В начало страницы">Клуб Барберов</a>
     <nav aria-label="Нижняя навигация">
-      <a href="./materials.html" title="Полезные материалы">Материалы</a>
+      <a href="./materials.html" title="Бесплатные уроки">Бесплатные уроки</a>
       <a href="#pricing" title="Тарифы">Тарифы</a>
       <a href="https://t.me/teymur_barber/4397" target="_blank" rel="noopener noreferrer" title="Telegram Клуба">Telegram</a>
     </nav>
-    <p>© 2026 Клуб Барберов. Все права защищены.</p>
+    <p>Клуб работает на ваш успех · © 2026 Клуб Барберов</p>
   </div>
 </footer>
 
