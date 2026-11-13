@@ -7,6 +7,40 @@
   var cfg = window.APP_CONFIG || {};
   var fmt = function (n) { return Math.round(n).toLocaleString('ru-RU').replace(/\u00a0/g, ' ') + ' руб.'; };
 
+  /* ---------- ПАРТНЁРСКИЕ ССЫЛКИ: учёт переходов (?ref=имя) ---------- */
+  var REF_RE = /^[a-z0-9_-]{2,40}$/;
+  function getRef() {
+    try {
+      var o = JSON.parse(localStorage.getItem('kb_ref') || 'null');
+      if (o && REF_RE.test(o.r) && Date.now() - o.t < 30 * 864e5) return o.r;
+    } catch (e) {}
+    return null;
+  }
+  function visitorId() {
+    try {
+      var id = localStorage.getItem('kb_vid');
+      if (!id) {
+        id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Math.random().toString(36).slice(2) + Date.now().toString(36) + Math.random().toString(36).slice(2));
+        localStorage.setItem('kb_vid', id);
+      }
+      return id;
+    } catch (e) { return 'anon' + Math.random().toString(36).slice(2, 12); }
+  }
+  (function trackVisit() {
+    var m = /[?&]ref=([^&#]+)/i.exec(location.search), ref = m && decodeURIComponent(m[1]).toLowerCase();
+    if (!ref || !REF_RE.test(ref)) return;
+    try { localStorage.setItem('kb_ref', JSON.stringify({ r: ref, t: Date.now() })); } catch (e) {}
+    if (!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) return;
+    if (navigator.webdriver || /bot|crawl|spider|slurp|preview|facebookexternalhit|telegram/i.test(navigator.userAgent)) return;
+    var key = 'kb_v_' + ref;
+    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch (e) {}
+    fetch(cfg.SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/visits', {
+      method: 'POST', keepalive: true,
+      headers: { 'Content-Type': 'application/json', apikey: cfg.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + cfg.SUPABASE_ANON_KEY, Prefer: 'return=minimal' },
+      body: JSON.stringify({ partner_slug: ref, visitor_id: visitorId(), path: location.pathname })
+    }).catch(function () {});
+  })();
+
   /* ---------- NAV ---------- */
   var nav = $('.nav'), burger = $('.burger');
   if (burger && nav) {
@@ -73,10 +107,11 @@
   $$('[data-count]').forEach(function (el) { cio.observe(el); });
 
   /* ---------- ФОТО ТЕЙМУРА и ЛОГО: показываем, только если файл добавлен ---------- */
-  var me = $('#hero-me');
-  if (me) { var im = new Image(); im.onload = function () { me.hidden = false; }; im.src = me.getAttribute('src'); }
   var lm = $('#logo-mark');
   if (lm) { var lg = new Image(); lg.onload = function () { lm.innerHTML = ''; lg.alt = ''; lm.appendChild(lg); }; lg.src = (document.body.dataset.root || './') + 'assets/img/logo.png'; }
+
+  /* ---------- Ссылки карточек «Бесплатные уроки» ---------- */
+  $$('[data-link]').forEach(function (a) { var u = (cfg.MATERIAL_LINKS || {})[a.dataset.link]; if (u) a.href = u; });
 
   /* ---------- FAQ ---------- */
   $$('.faq-item').forEach(function (item) {
@@ -196,9 +231,10 @@
       $('#o-price').textContent = price + ' руб.'; $('#o-fill').textContent = fill; $('#o-max').textContent = max; $('#o-days').textContent = days;
       var now = price * fill * days, full = price * max * days;
       $('#r-now').textContent = fmt(now); $('#r-full').textContent = fmt(full); $('#r-gap').textContent = fmt(full - now);
-      $('#r-add').textContent = fmt(price * 10) + ' – ' + fmt(price * 15);
-      var club = +cfg.CLUB_PRICE || 3690;
-      $('#r-club').textContent = club; $('#r-pay').textContent = Math.max(1, Math.ceil(club / price));
+      var club = +cfg.CLUB_PRICE || 3690, n = Math.max(1, Math.ceil(club / price));
+      $('#r-club').textContent = club.toLocaleString('ru-RU').replace(/\u00a0/g, '\u00a0') + '\u00a0₽';
+      $('#r-pay').textContent = n;
+      $('#r-word').textContent = (n % 10 === 1 && n % 100 !== 11) ? 'дополнительной записи' : 'дополнительных записей';
     };
     [cp, cf, cm, cd].forEach(function (i) { i.addEventListener('input', calc); });
     calc();
@@ -252,7 +288,7 @@
       fetch(cfg.SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/' + (cfg.LEADS_TABLE || 'leads'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', apikey: cfg.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + cfg.SUPABASE_ANON_KEY, Prefer: 'return=minimal' },
-        body: JSON.stringify({ name: name, contact: contact, source: location.pathname })
+        body: JSON.stringify({ name: name, contact: contact, source: location.pathname, ref: getRef() })
       }).then(function (r) {
         if (!r.ok) throw new Error(r.status);
         localStorage.setItem('kb_lead_ts', String(Date.now()));

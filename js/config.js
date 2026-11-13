@@ -8,5 +8,7 @@ window.APP_CONFIG = {
   // Положите файлы в assets/chat/ и перечислите их так: ['./assets/chat/chat-01.jpg', './assets/chat/chat-02.jpg']
   CHAT_SHOTS: [],
   CLUB_PRICE: 3690,        // цена месячной подписки для калькулятора
+  // Ссылки карточек на странице «Бесплатные уроки». Пока пусто — карточки ведут в Telegram.
+  MATERIAL_LINKS: { income: '', guide: '', books: '' },
   TELEGRAM_URL: 'https://t.me/teymur_barber/4397'
 };

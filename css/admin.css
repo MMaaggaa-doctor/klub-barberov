@@ -1,0 +1,54 @@
+.adm{background:var(--ink);min-height:100vh}
+.adm-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 5vw;border-bottom:1px solid var(--line);background:rgba(13,13,13,.9);position:sticky;top:0;z-index:20}
+.adm-out{padding:.7rem 1.4rem;font-size:.7rem}
+.adm-main{max-width:1100px;margin:0 auto;padding:2.5rem 5vw 5rem}
+.adm-card{background:var(--ink2);border:1px solid var(--line);border-radius:8px;padding:1.6rem;margin-bottom:1.4rem}
+.adm-login{max-width:420px;margin:4rem auto}
+.adm-login h1,.adm-card h2,.adm-head h2{font-size:1.5rem;margin-bottom:1.2rem}
+.adm-login .btn{width:100%}
+.adm-new{display:grid;grid-template-columns:1fr 1fr auto;gap:1rem;align-items:end}
+.adm-new .field{margin:0}
+.adm-new .btn{min-height:50px;padding:.9rem 1.6rem}
+.adm-fresh{margin-top:1.2rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;padding:1rem;border:1px dashed rgba(243,204,14,.5);border-radius:6px;background:rgba(243,204,14,.05)}
+.adm-fresh span{color:var(--grey);font-size:.85rem}
+.adm-fresh code{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--y);word-break:break-all;font-size:.9rem;flex:1 1 260px}
+.adm-fresh .btn,.adm-table .btn{padding:.6rem 1.1rem;font-size:.68rem;min-height:44px}
+.adm-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin:2.4rem 0 1rem}
+.adm-head h2{margin:0}
+.adm-range{display:flex;gap:.4rem;flex-wrap:wrap}
+.adm-range button{min-height:44px;padding:.5rem 1rem;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--grey);font-size:.8rem;transition:.2s}
+.adm-range button.on,.adm-range button:hover{border-color:var(--y);color:var(--y)}
+.adm-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.4rem}
+.adm-sum div{background:var(--ink2);border:1px solid var(--line);border-radius:8px;padding:1.2rem 1.4rem}
+.adm-sum small{display:block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--grey)}
+.adm-sum b{display:block;font-weight:normal;font-size:2.2rem;color:var(--y);line-height:1.1;margin-top:.3rem}
+.adm-table-wrap{padding:0;overflow-x:auto}
+.adm-table{width:100%;border-collapse:collapse;min-width:760px}
+.adm-table th{font-weight:normal;text-align:left;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--grey);padding:1rem 1.2rem;border-bottom:1px solid var(--line)}
+.adm-table td{padding:1rem 1.2rem;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:middle}
+.adm-table tr:last-child td{border-bottom:0}
+.adm-table .num{text-align:right;font-variant-numeric:tabular-nums}
+.adm-table td.num{font-size:1.2rem}
+.p-name{display:block;font-size:1rem}
+.p-link{display:flex;align-items:center;gap:.6rem;margin-top:.3rem;flex-wrap:wrap}
+.p-link code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.75rem;color:var(--grey);word-break:break-all}
+.copy-b,.del-b{min-height:44px;min-width:44px;display:inline-grid;place-items:center;background:transparent;border:1px solid var(--line);border-radius:4px;color:var(--y);font-size:.7rem;padding:0 .8rem;transition:.2s}
+.copy-b:hover{border-color:var(--y)}
+.del-b{color:#ff7a6b;border-color:rgba(255,122,107,.3)}
+.del-b:hover{border-color:#ff7a6b}
+.spark{display:block;width:120px;height:32px}
+.spark rect{fill:var(--y)}
+.st{display:inline-flex;align-items:center;gap:.5rem;min-height:44px;background:none;border:0;color:var(--milk);font-size:.8rem}
+.st i{width:36px;height:20px;border-radius:10px;background:#333;position:relative;transition:.25s}
+.st i::after{content:'';position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#888;transition:.25s}
+.st.on i{background:rgba(243,204,14,.35)}
+.st.on i::after{left:19px;background:var(--y)}
+.adm-empty,.adm-note{color:var(--grey);font-size:.85rem;padding:1.4rem}
+.adm-note{padding:0;margin-top:1rem}
+.adm-warn{padding:1rem 1.2rem;border:1px solid rgba(255,122,107,.5);border-radius:6px;background:rgba(255,122,107,.08);color:#ffb0a6;margin-bottom:1.4rem;font-size:.9rem}
+@media (max-width:768px){
+  .adm-new{grid-template-columns:1fr}
+  .adm-new .btn{width:100%}
+  .adm-sum{grid-template-columns:1fr}
+  .adm-sum b{font-size:1.8rem}
+}
