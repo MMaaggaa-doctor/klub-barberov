@@ -61,7 +61,7 @@
     if (nav && !nav.classList.contains('open')) nav.classList.toggle('hide', y > lastY && y > 500);
     lastY = y;
     if (mcta) {
-      var pr = $('#pricing'), nearPrice = pr && pr.getBoundingClientRect().top < window.innerHeight * .6 && pr.getBoundingClientRect().bottom > 0;
+      var near = function (id) { var s = $(id); if (!s) return false; var r = s.getBoundingClientRect(); return r.top < window.innerHeight * .6 && r.bottom > 0; }; var nearPrice = near('#pricing') || near('#join');
       mcta.classList.toggle('show', y > window.innerHeight * .8 && !nearPrice);
     }
   }
@@ -107,6 +107,8 @@
   $$('[data-count]').forEach(function (el) { cio.observe(el); });
 
   /* ---------- ФОТО ТЕЙМУРА и ЛОГО: показываем, только если файл добавлен ---------- */
+  var heroMe = $('#hero-me');
+  if (heroMe) { var hv = heroMe.parentElement; var bad = function () { hv.classList.add('no-photo'); heroMe.style.display = 'none'; }; heroMe.addEventListener('error', bad); if (heroMe.complete && heroMe.naturalWidth === 0) bad(); }
   var lm = $('#logo-mark');
   if (lm) { var lg = new Image(); lg.onload = function () { lm.innerHTML = ''; lg.alt = ''; lm.appendChild(lg); }; lg.src = (document.body.dataset.root || './') + 'assets/img/logo.png'; }
 
