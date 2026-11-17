@@ -148,7 +148,7 @@ section[id]{scroll-margin-top:5rem}
 .pain-item p{font-size:1.05rem;line-height:1.4;padding-top:.3rem}
 .pain-end{margin-top:3.2rem;display:grid;gap:1.2rem;max-width:760px}
 .pain-end h3{font-size:clamp(1.8rem,4vw,3.4rem)}
-.pain-end p{max-width:520px;font-size:.95rem;opacity:.78}
+.pain-end p{max-width:820px;font-size:clamp(1.05rem,1.8vw,1.55rem);line-height:1.45;opacity:.9}
 .pain .m3d,.final .m3d{filter:drop-shadow(0 26px 22px rgba(0,0,0,.4))}
 .pain .m3d{width:min(19vw,260px);right:5vw;top:3.5rem}
 
@@ -255,7 +255,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3.2rem;perspective:1200px}
 .feat{background:var(--ink2);border:1px solid rgba(255,255,255,.07);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .3s,box-shadow .4s;will-change:transform;transform-style:preserve-3d}
 .feat:hover{border-color:rgba(243,204,14,.5);box-shadow:0 26px 60px rgba(0,0,0,.5)}
-.feat-img{aspect-ratio:16/10;overflow:hidden;background:var(--ink3)}
+.feat-img{aspect-ratio:4/3;overflow:hidden;background:var(--ink3)}
 .feat-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(30%) brightness(.85);transition:transform .9s var(--ease),filter .5s}
 .feat:hover .feat-img img{transform:scale(1.08);filter:grayscale(0) brightness(1)}
 .feat-img{display:grid;place-items:center;background:radial-gradient(circle at 50% 62%,rgba(243,204,14,.24),transparent 62%),linear-gradient(160deg,#1c1c1c,#0f0f0f)}
@@ -488,3 +488,46 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 }
 .phone-body[hidden]{display:none}
 @media (min-width:769px){.pillar:nth-child(2) .obj{height:25%}}
+
+/* картинки-иллюстрации в «Что внутри» */
+.feat-art{position:absolute;inset:0;width:100%;height:100%;padding:.6rem;overflow:visible}
+.feat-art text{font-family:'NAMU 1990',system-ui,sans-serif}
+.feat-art .art-b1,.feat-art .art-b2,.feat-art .art-av,.feat-art .art-pill{transform-box:fill-box;transform-origin:center;opacity:0;transform:translateY(14px) scale(.96);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.feat.in .feat-art .art-b1{opacity:1;transform:none;transition-delay:.2s}
+.feat.in .feat-art .art-b2{opacity:1;transform:none;transition-delay:.55s}
+.feat.in .feat-art .art-av{opacity:1;transform:none;transition-delay:.9s}
+.feat.in .feat-art .art-pill{opacity:1;transform:none;transition-delay:1.9s}
+.feat-art .bar rect:first-of-type{}
+.feat-art .bar{transform-box:fill-box;transform-origin:left center;opacity:0;transform:scaleX(.2);transition:opacity .45s var(--ease),transform .6s var(--ease);transition-delay:calc(var(--i)*.14s + .3s)}
+.feat.in .feat-art .bar{opacity:1;transform:none}
+.feat-art .art-spark{animation:twinkle 2.6s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.35}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.feat-art .art-b1,.feat-art .art-b2,.feat-art .art-av,.feat-art .art-pill,.feat-art .bar{opacity:1!important;transform:none!important}}
+
+/* ВАРИАНТ: белый первый экран (включается HERO_STYLE:'light' в config.js или ?hero=light) */
+.hl .hero{background:#fff}
+.hl .hero-letter{color:rgba(13,13,13,.045)}
+.hl .hero h1{color:var(--ink)}
+.hl .hero h1 .ln:nth-child(2) span{color:var(--ink);display:inline-block;background:linear-gradient(transparent 58%,var(--y) 58%,var(--y) 90%,transparent 90%)}
+.hl .hero-tagline{color:var(--ink)}
+.hl .hero-sub{color:#4c4c52}
+.hl .hero-sub b{color:var(--ink);background:var(--y);padding:0 .35em;font-weight:normal}
+.hl .hero .btn-ghost{background:#fff;color:var(--ink);border-color:rgba(13,13,13,.28)}
+.hl .hero .btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+.hl .hero-vis{background:#fff}
+.hl .hero-slant{display:none}
+.hl .hero-vis>img.hero-me{-webkit-mask-image:linear-gradient(to right,transparent 0,#000 22%);mask-image:linear-gradient(to right,transparent 0,#000 22%)}
+.hl .scroll-cue{border-color:rgba(13,13,13,.35)}
+.hl .vsl-frame{box-shadow:0 30px 60px rgba(13,13,13,.28),0 0 0 1px rgba(13,13,13,.9)}
+.nav{transition:transform .45s var(--ease),background .3s,border-color .3s}
+.nav.on-light{background:rgba(255,255,255,.9);border-bottom-color:rgba(13,13,13,.1)}
+.nav.on-light .nav-links a{color:#55555a}
+.nav.on-light .nav-links a:hover,.nav.on-light .nav-links a.active{color:var(--ink)}
+.nav.on-light .logo{color:var(--ink)}
+.nav.on-light .burger{background:rgba(13,13,13,.05);border-color:rgba(13,13,13,.18)}
+.nav.on-light .burger span,.nav.on-light .burger span::before,.nav.on-light .burger span::after{background:var(--ink)}
+.nav.on-light.open .burger span{background:transparent}
+@media (max-width:768px){.hl .hero-vis{background:#fff}.nav.on-light .nav-links{background:rgba(255,255,255,.98)}.nav.on-light .nav-links a{border-top-color:rgba(13,13,13,.08)}}
+
+/* Неприметный вход в панель администратора */
+.admin-secret{display:inline-block;margin-left:8px;font-size:12px;opacity:.13;text-decoration:none;transition:opacity .2s}.admin-secret:hover,.admin-secret:focus{opacity:.75}

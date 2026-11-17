@@ -28,50 +28,133 @@
       <label class="field"><span>Пароль</span><input type="password" id="l-pass" autocomplete="current-password" required></label>
       <button class="btn" type="submit">Войти</button>
       <p class="form-msg" id="login-msg" role="status"></p>
+      <details class="adm-register"><summary>Первый вход? Создать администратора</summary><form id="register-form"><label class="field"><span>Почта</span><input type="email" id="r-email" required></label><label class="field"><span>Пароль (от 10 символов)</span><input type="password" id="r-pass" minlength="10" required></label><button class="btn" type="submit">Зарегистрироваться</button></form></details>
     </form>
   </section>
 
   <section id="app" hidden>
-    <p class="adm-warn" id="not-admin" hidden>Эта почта не в списке администраторов. Добавьте её в таблицу <b>admins</b> в Supabase (инструкция в README).</p>
+    <p class="adm-warn" id="not-admin" hidden>У этой учётной записи нет прав администратора.</p>
 
-    <div class="adm-card">
-      <h2>Новая партнёрская ссылка</h2>
-      <form id="new-form" class="adm-new" novalidate>
-        <label class="field"><span>Имя партнёра</span><input type="text" id="n-name" maxlength="80" placeholder="Например, Иван Барбер" required></label>
-        <label class="field"><span>Метка в ссылке</span><input type="text" id="n-slug" maxlength="40" placeholder="ivan-barber" required></label>
-        <button class="btn" type="submit">Создать ссылку</button>
-      </form>
-      <p class="form-msg" id="new-msg" role="status"></p>
-      <div class="adm-fresh" id="fresh" hidden>
-        <span>Ссылка для партнёра:</span>
-        <code id="fresh-url"></code>
-        <button type="button" class="btn btn-ghost" id="fresh-copy">Скопировать</button>
-      </div>
-    </div>
-
-    <div class="adm-head">
-      <h2>Статистика</h2>
-      <div class="adm-range" role="group" aria-label="Период">
+    <div class="adm-bar">
+      <nav class="adm-tabs" role="tablist" aria-label="Разделы">
+        <button type="button" role="tab" data-tab="partners" class="on">Партнёры</button>
+        <button type="button" role="tab" data-tab="funnel">Воронка</button>
+        <button type="button" role="tab" data-tab="leads">Заявки</button>
+        <button type="button" role="tab" data-tab="payments">Оплаты</button>
+        <button type="button" role="tab" data-tab="utm">Ссылки UTM</button>
+      </nav>
+      <div class="adm-range" role="group" aria-label="Период" id="range">
         <button type="button" data-days="7">7 дней</button>
         <button type="button" data-days="30" class="on">30 дней</button>
         <button type="button" data-days="90">90 дней</button>
         <button type="button" data-days="all">Всё время</button>
       </div>
     </div>
+    <p class="form-msg" id="global-msg" role="status"></p>
 
-    <div class="adm-sum" id="sum"></div>
-
-    <div class="adm-card adm-table-wrap">
-      <table class="adm-table" id="tbl">
-        <thead><tr><th>Партнёр</th><th class="num">Переходы</th><th class="num">Уникальные</th><th class="num">Заявки</th><th>Динамика, 30 дн.</th><th>Статус</th><th></th></tr></thead>
-        <tbody id="rows"></tbody>
-      </table>
-      <p class="adm-empty" id="empty" hidden>Пока нет ни одной ссылки. Создайте первую выше.</p>
+    <!-- ПАРТНЁРЫ -->
+    <div class="adm-pane" id="pane-partners">
+      <div class="adm-card">
+        <h2>Новая партнёрская ссылка</h2>
+        <form id="new-form" class="adm-new" novalidate>
+          <label class="field"><span>Имя партнёра</span><input type="text" id="n-name" maxlength="80" placeholder="Например, Иван Барбер" required></label>
+          <label class="field"><span>Метка в ссылке</span><input type="text" id="n-slug" maxlength="40" placeholder="ivan-barber" required></label>
+          <button class="btn" type="submit">Создать ссылку</button>
+        </form>
+        <details class="adm-bulk"><summary>Добавить сразу несколько</summary>
+          <label class="field"><span>Имена партнёров, по одному на строку</span><textarea id="b-names" rows="4" placeholder="Иван Барбер&#10;Мария Стрижка&#10;Артём UGC"></textarea></label>
+          <button class="btn btn-ghost" type="button" id="b-go">Создать все ссылки</button>
+        </details>
+        <p class="form-msg" id="new-msg" role="status"></p>
+        <div class="adm-fresh" id="fresh" hidden>
+          <span>Готово. Ссылки для партнёров:</span>
+          <pre id="fresh-list"></pre>
+          <button type="button" class="btn btn-ghost" id="fresh-copy">Скопировать всё</button>
+        </div>
+      </div>
+      <div class="adm-sum" id="sum"></div>
+      <div class="adm-card adm-table-wrap">
+        <table class="adm-table" id="tbl">
+          <thead><tr><th>Партнёр</th><th class="num">Посетители</th><th class="num">Заявки</th><th class="num">Оплаты</th><th class="num">Сумма</th><th class="num">Вознаграждение</th><th>Динамика, 30 дн.</th><th>Статус</th><th></th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <p class="adm-empty" id="empty" hidden>Пока нет ни одной ссылки. Создайте первую выше.</p>
+      </div>
+      <p class="adm-note">«Посетители» считаются по браузеру. Вознаграждение = сумма оплат по партнёру × процент из config.js. Оплаты вносятся на вкладке «Оплаты».</p>
     </div>
-    <p class="adm-note">«Уникальные» считаются по браузеру: тот же человек с другого устройства посчитается дважды. Роботы и поисковики в статистику не попадают.</p>
+
+    <!-- ВОРОНКА -->
+    <div class="adm-pane" id="pane-funnel" hidden>
+      <div class="adm-card">
+        <h2>Воронка: от захода до оплаты</h2>
+        <div id="funnel-steps" class="funnel"></div>
+        <p class="adm-note" id="funnel-note"></p>
+      </div>
+      <div class="adm-card adm-table-wrap">
+        <table class="adm-table" id="ftbl">
+          <thead><tr><th>Источник</th><th class="num">Посетители</th><th class="num">Нажали кнопку</th><th class="num">К оплате</th><th class="num">Заявки</th><th class="num">Оплатили</th><th class="num">Выручка</th><th class="num">Из захода в оплату</th></tr></thead>
+          <tbody id="frows"></tbody>
+        </table>
+        <p class="adm-empty" id="fempty" hidden>Пока нет данных за выбранный период.</p>
+      </div>
+      <p class="adm-note">Источник — метка партнёра (?ref=) или utm_source. Тех, у кого метки нет, видно как «прямой / не определён».</p>
+    </div>
+
+    <!-- ЗАЯВКИ -->
+    <div class="adm-pane" id="pane-leads" hidden>
+      <div class="adm-card adm-table-wrap">
+        <table class="adm-table" id="ltbl">
+          <thead><tr><th>Дата</th><th>Имя</th><th>Контакт</th><th>Источник</th><th>Кампания</th><th></th></tr></thead>
+          <tbody id="lrows"></tbody>
+        </table>
+        <p class="adm-empty" id="lempty" hidden>Заявок за выбранный период нет.</p>
+      </div>
+    </div>
+
+    <!-- ОПЛАТЫ -->
+    <div class="adm-pane" id="pane-payments" hidden>
+      <div class="adm-card">
+        <h2>Внести оплату</h2>
+        <form id="pay-form" class="adm-pay" novalidate>
+          <label class="field"><span>Источник</span><select id="p-source"></select></label>
+          <label class="field" id="p-custom-box" hidden><span>Название источника</span><input type="text" id="p-custom" maxlength="40" placeholder="instagram"></label>
+          <label class="field"><span>Тариф</span><select id="p-plan"><option value="month">Месяц</option><option value="year">Год</option><option value="trial">Пробная неделя</option><option value="other">Другое</option></select></label>
+          <label class="field"><span>Сумма, ₽</span><input type="number" id="p-amount" min="0" step="1" inputmode="numeric" placeholder="3690" required></label>
+          <label class="field"><span>Дата оплаты</span><input type="date" id="p-date"></label>
+          <label class="field p-wide"><span>Комментарий (кто оплатил)</span><input type="text" id="p-comment" maxlength="300" placeholder="Имя или @username"></label>
+          <button class="btn" type="submit">Добавить оплату</button>
+        </form>
+        <p class="form-msg" id="pay-msg" role="status"></p>
+      </div>
+      <div class="adm-sum" id="psum"></div>
+      <div class="adm-card adm-table-wrap">
+        <table class="adm-table" id="ptbl">
+          <thead><tr><th>Дата</th><th>Источник</th><th>Тариф</th><th class="num">Сумма</th><th>Комментарий</th><th></th></tr></thead>
+          <tbody id="prows"></tbody>
+        </table>
+        <p class="adm-empty" id="pempty" hidden>Оплат за выбранный период нет.</p>
+      </div>
+      <p class="adm-note">Оплаты сейчас вносятся вручную. Позже их можно записывать автоматически из бота или платёжной системы, структура уже готова.</p>
+    </div>
+
+    <!-- UTM -->
+    <div class="adm-pane" id="pane-utm" hidden>
+      <div class="adm-card">
+        <h2>Ссылка с UTM-метками</h2>
+        <p class="adm-note" style="padding:0 0 1rem">Для постов, рилсов, рекламы и рассылок. Метки запоминаются на 30 дней, и источник виден в воронке.</p>
+        <div class="adm-pay">
+          <label class="field"><span>Куда ведёт ссылка</span><input type="text" id="u-base"></label>
+          <label class="field"><span>Источник (utm_source)</span><input type="text" id="u-source" list="u-sources" placeholder="instagram"><datalist id="u-sources"><option value="instagram"><option value="telegram"><option value="youtube"><option value="tiktok"><option value="vk"><option value="ads"><option value="email"></datalist></label>
+          <label class="field"><span>Канал (utm_medium)</span><input type="text" id="u-medium" list="u-mediums" placeholder="reels"><datalist id="u-mediums"><option value="reels"><option value="stories"><option value="post"><option value="bio"><option value="cpc"><option value="channel"><option value="chat"></datalist></label>
+          <label class="field"><span>Кампания (utm_campaign)</span><input type="text" id="u-campaign" placeholder="launch-nov"></label>
+          <label class="field"><span>Вариант (utm_content)</span><input type="text" id="u-content" placeholder="video-1"></label>
+        </div>
+        <div class="adm-fresh"><code id="u-out"></code><button type="button" class="btn btn-ghost" id="u-copy">Скопировать</button></div>
+      </div>
+    </div>
   </section>
 
-  <p class="adm-warn" id="no-cfg" hidden>Supabase не подключён. Впишите адрес проекта и ключ в <b>js/config.js</b>.</p>
+  <p class="adm-warn" id="no-cfg" hidden>Не удалось подключиться к серверу. Проверьте config.php и базу MySQL на Beget.</p>
 </main>
 
 <script src="./js/config.js"></script>

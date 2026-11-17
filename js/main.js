@@ -5,41 +5,12 @@
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var cfg = window.APP_CONFIG || {};
-  var fmt = function (n) { return Math.round(n).toLocaleString('ru-RU').replace(/\u00a0/g, ' ') + ' руб.'; };
-
-  /* ---------- ПАРТНЁРСКИЕ ССЫЛКИ: учёт переходов (?ref=имя) ---------- */
-  var REF_RE = /^[a-z0-9_-]{2,40}$/;
-  function getRef() {
-    try {
-      var o = JSON.parse(localStorage.getItem('kb_ref') || 'null');
-      if (o && REF_RE.test(o.r) && Date.now() - o.t < 30 * 864e5) return o.r;
-    } catch (e) {}
-    return null;
-  }
-  function visitorId() {
-    try {
-      var id = localStorage.getItem('kb_vid');
-      if (!id) {
-        id = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Math.random().toString(36).slice(2) + Date.now().toString(36) + Math.random().toString(36).slice(2));
-        localStorage.setItem('kb_vid', id);
-      }
-      return id;
-    } catch (e) { return 'anon' + Math.random().toString(36).slice(2, 12); }
-  }
-  (function trackVisit() {
-    var m = /[?&]ref=([^&#]+)/i.exec(location.search), ref = m && decodeURIComponent(m[1]).toLowerCase();
-    if (!ref || !REF_RE.test(ref)) return;
-    try { localStorage.setItem('kb_ref', JSON.stringify({ r: ref, t: Date.now() })); } catch (e) {}
-    if (!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) return;
-    if (navigator.webdriver || /bot|crawl|spider|slurp|preview|facebookexternalhit|telegram/i.test(navigator.userAgent)) return;
-    var key = 'kb_v_' + ref;
-    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key, '1'); } catch (e) {}
-    fetch(cfg.SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/visits', {
-      method: 'POST', keepalive: true,
-      headers: { 'Content-Type': 'application/json', apikey: cfg.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + cfg.SUPABASE_ANON_KEY, Prefer: 'return=minimal' },
-      body: JSON.stringify({ partner_slug: ref, visitor_id: visitorId(), path: location.pathname })
-    }).catch(function () {});
+  /* Вариант первого экрана: config.js → HERO_STYLE или ?hero=light для предпросмотра */
+  (function () {
+    var q = ''; try { q = new URLSearchParams(location.search).get('hero') || ''; } catch (e) {}
+    if ((q || cfg.HERO_STYLE) === 'light') document.body.classList.add('hl');
   })();
+  var fmt = function (n) { return Math.round(n).toLocaleString('ru-RU').replace(/\u00a0/g, ' ') + ' руб.'; };
 
   /* ---------- NAV ---------- */
   var nav = $('.nav'), burger = $('.burger');
@@ -59,6 +30,7 @@
     var y = window.scrollY, h = document.documentElement.scrollHeight - window.innerHeight;
     if (bar) bar.style.transform = 'scaleX(' + (h > 0 ? y / h : 0) + ')';
     if (nav && !nav.classList.contains('open')) nav.classList.toggle('hide', y > lastY && y > 500);
+    var hero = $('.hero'); if (nav && hero) nav.classList.toggle('on-light', document.body.classList.contains('hl') && y < hero.offsetHeight - 80);
     lastY = y;
     if (mcta) {
       var near = function (id) { var s = $(id); if (!s) return false; var r = s.getBoundingClientRect(); return r.top < window.innerHeight * .6 && r.bottom > 0; }; var nearPrice = near('#pricing') || near('#join');
@@ -111,9 +83,6 @@
   if (heroMe) { var hv = heroMe.parentElement; var bad = function () { hv.classList.add('no-photo'); heroMe.style.display = 'none'; }; heroMe.addEventListener('error', bad); if (heroMe.complete && heroMe.naturalWidth === 0) bad(); }
   var lm = $('#logo-mark');
   if (lm) { var lg = new Image(); lg.onload = function () { lm.innerHTML = ''; lg.alt = ''; lm.appendChild(lg); }; lg.src = (document.body.dataset.root || './') + 'assets/img/logo.png'; }
-
-  /* ---------- Ссылки карточек «Бесплатные уроки» ---------- */
-  $$('[data-link]').forEach(function (a) { var u = (cfg.MATERIAL_LINKS || {})[a.dataset.link]; if (u) a.href = u; });
 
   /* ---------- FAQ ---------- */
   $$('.faq-item').forEach(function (item) {
@@ -267,7 +236,7 @@
     $$('img', pin).forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { measure(); upd(); }); });
   }
 
-  /* ---------- LEAD FORM → Supabase ---------- */
+  /* ---------- LEAD FORM → MySQL Beget ---------- */
   var form = $('#lead-form'), msg = $('#form-msg');
   if (form) {
     var say = function (t, cls) { msg.textContent = t; msg.className = 'form-msg ' + (cls || ''); };
@@ -281,19 +250,13 @@
       var last = +localStorage.getItem('kb_lead_ts') || 0;
       if (Date.now() - last < 60000) return say('Заявка уже отправлена. Подождите минуту.', 'err');
       var btn = $('button[type=submit]', form); btn.disabled = true; say('Отправляем…');
-      if (!cfg.SUPABASE_URL || !cfg.SUPABASE_ANON_KEY) {
-        btn.disabled = false;
-        say('Форма ещё не подключена. Напишите нам в Telegram.', 'err');
-        window.open(cfg.TELEGRAM_URL, '_blank', 'noopener');
-        return;
-      }
-      fetch(cfg.SUPABASE_URL.replace(/\/$/, '') + '/rest/v1/' + (cfg.LEADS_TABLE || 'leads'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', apikey: cfg.SUPABASE_ANON_KEY, Authorization: 'Bearer ' + cfg.SUPABASE_ANON_KEY, Prefer: 'return=minimal' },
-        body: JSON.stringify({ name: name, contact: contact, source: location.pathname, ref: getRef() })
+      fetch((cfg.API_URL || './api.php') + '?action=lead', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.assign({ name: name, contact: contact, source: location.pathname }, window.KB ? KB.leadFields() : {}))
       }).then(function (r) {
         if (!r.ok) throw new Error(r.status);
         localStorage.setItem('kb_lead_ts', String(Date.now()));
+        if (window.KB) KB.track('lead_submit', { target: 'form' });
         form.reset(); say('Заявка отправлена. Мы скоро свяжемся с вами.', 'ok');
       }).catch(function () {
         say('Не удалось отправить. Попробуйте ещё раз или напишите в Telegram.', 'err');
