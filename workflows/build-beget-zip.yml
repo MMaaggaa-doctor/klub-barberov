@@ -1,0 +1,61 @@
+name: Build Beget ZIP
+
+on:
+  push:
+    branches: ["main", "master"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Prepare website files
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          if [ -d "site" ] && [ -f "site/index.html" ]; then
+            cp -a site/. dist/
+          elif [ -f "index.html" ]; then
+            cp -a . dist/
+            rm -rf dist/.git dist/.github dist/dist
+          else
+            shopt -s nullglob
+            archives=( *.zip )
+            if [ ${#archives[@]} -eq 0 ]; then
+              echo "No site/index.html, root index.html, or ZIP archive found." >&2
+              exit 1
+            fi
+            mkdir extracted
+            unzip -q "${archives[0]}" -d extracted
+            if [ -d extracted/site ] && [ -f extracted/site/index.html ]; then
+              cp -a extracted/site/. dist/
+            else
+              found="$(find extracted -type f -name index.html -print -quit)"
+              if [ -z "$found" ]; then echo "index.html not found in uploaded ZIP" >&2; exit 1; fi
+              root="$(dirname "$found")"
+              cp -a "$root"/. dist/
+            fi
+          fi
+          test -f dist/index.html
+          test -f dist/api.php
+          test -f dist/config.php.example
+
+      - name: Create Beget package
+        run: |
+          cd dist
+          zip -qr ../klub_barberov_beget_mysql.zip .
+
+      - name: Upload ZIP artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: klub-barberov-beget-mysql
+          path: klub_barberov_beget_mysql.zip
+          if-no-files-found: error
+          retention-days: 14
