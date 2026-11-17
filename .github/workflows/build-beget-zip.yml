@@ -1,1 +1,27 @@
+name: Build Beget ZIP
 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+
+      - name: Create ZIP
+        run: |
+          zip -r klub-barberov-beget-mysql.zip . \
+            -x ".git/*" ".github/*" "*.zip"
+
+      - name: Upload ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: klub-barberov-beget-mysql
+          path: klub-barberov-beget-mysql.zip
+          retention-days: 7
