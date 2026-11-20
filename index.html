@@ -178,36 +178,29 @@
   </div>
 </section>
 
-<!-- PILLARS -->
-<section class="pillars" id="pillars">
+<!-- COMMUNITY SLIDES -->
+<section class="community-slides" id="community-slides">
   <div class="wrap">
-    <h2 class="pillars-title"><span class="mask" data-mask><span>Нас учили стричь. Мы научим быть востребованными.</span></span></h2>
-    <div class="pillars-row">
-      <article class="pillar rv" data-tilt="9">
-        <div class="pillar-num">I</div>
-        <h3>Стрижки</h3>
-        <div class="pl-row"><span class="pl-label">Сейчас</span><p>Стрижёте по интуиции и не знаете, что получится в конце?</p></div>
-        <div class="pl-row pl-club"><span class="pl-label">В клубе</span><p>Научитесь подбирать стрижку и закроете все вопросы с удлиненками</p></div>
-        <div class="obj" aria-hidden="true"><img src="./assets/3d/deco-mum.webp" alt="" width="400" height="459" loading="lazy" decoding="async"></div>
-      </article>
-      <article class="pillar rv" data-tilt="9" style="--d:0.1s">
-        <div class="pillar-num">II</div>
-        <h3>Соцсети</h3>
-        <div class="pl-row"><span class="pl-label">Сейчас</span><p>Знаете, что «надо их вести», но не понимаете, что снимать, и бросаете это дело</p></div>
-        <div class="pl-row pl-club"><span class="pl-label">В клубе</span><p>Простая система без жизни в телефоне: что снимать и как превращать просмотры в записи.</p></div>
-        <div class="obj" aria-hidden="true"><img src="./assets/3d/long_hair.webp" alt="" width="400" height="540" loading="lazy" decoding="async"></div>
-      </article>
-      <article class="pillar rv" data-tilt="9" style="--d:0.2s">
-        <div class="pillar-num">III</div>
-        <h3>Деньги и доход</h3>
-        <div class="pl-row"><span class="pl-label">Сейчас</span><p>Полдня у пустого кресла, денег хватает до середины месяца, а поднять цену страшно.</p></div>
-        <div class="pl-row pl-club"><span class="pl-label">В клубе</span><p>Запись на 1–2 недели вперёд, клиенты, которые возвращаются, и цена, за которую не стыдно.</p></div>
-        <div class="obj" aria-hidden="true"><img src="./assets/3d/unnamed.webp" alt="" width="400" height="323" loading="lazy" decoding="async"></div>
-      </article>
+    <div class="slides-head">
+      <span class="tag rv">Внутри клуба</span>
+      <h2><span class="mask" data-mask><span>Живое общение и полезные материалы</span></span></h2>
+      <p class="slides-intro">Общение, обратная связь и материалы для мастеров — в одном месте.</p>
     </div>
-    <p class="pillars-foot rv">И всё это — <mark>не в одиночку</mark>. Рядом барберы, которые идут туда же.</p>
+    <div class="community-carousel rv" aria-label="Слайд-шоу материалов клуба">
+      <button class="slide-arrow slide-prev" type="button" aria-label="Предыдущий слайд">‹</button>
+      <div class="slides-track">
+        <figure class="community-slide is-active"><img src="./assets/slideshow/chat-1.jpg" alt="Материалы и общение участников клуба" loading="lazy"><figcaption>Материалы и общение</figcaption></figure>
+        <figure class="community-slide"><img src="./assets/slideshow/chat-2.jpg" alt="Обсуждение контента и продвижения" loading="lazy"><figcaption>Контент и продвижение</figcaption></figure>
+        <figure class="community-slide"><img src="./assets/slideshow/chat-3.jpg" alt="Обратная связь участников" loading="lazy"><figcaption>Обратная связь</figcaption></figure>
+        <figure class="community-slide"><img src="./assets/slideshow/chat-4.jpg" alt="Рекомендации по созданию видео и субтитров" loading="lazy"><figcaption>Видео и субтитры</figcaption></figure>
+        <figure class="community-slide"><img src="./assets/slideshow/chat-5.jpg" alt="Отзывы и поддержка сообщества" loading="lazy"><figcaption>Поддержка сообщества</figcaption></figure>
+      </div>
+      <button class="slide-arrow slide-next" type="button" aria-label="Следующий слайд">›</button>
+      <div class="slide-dots" aria-label="Выбрать слайд"></div>
+    </div>
   </div>
 </section>
+
 
 <!-- CALCULATOR -->
 <section class="calc" id="calc">
@@ -436,5 +429,29 @@
 <script src="./js/config.js"></script>
 <script src="./js/track.js"></script>
 <script src="./js/main.js" defer></script>
+
+<script>
+(() => {
+  const carousel = document.querySelector('.community-carousel');
+  if (!carousel) return;
+  const slides = [...carousel.querySelectorAll('.community-slide')];
+  const dotsWrap = carousel.querySelector('.slide-dots');
+  let current = 0;
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.className = 'slide-dot' + (i === 0 ? ' is-active' : '');
+    dot.type = 'button'; dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
+    dot.addEventListener('click', () => show(i)); dotsWrap.appendChild(dot);
+  });
+  const dots = [...dotsWrap.querySelectorAll('.slide-dot')];
+  function show(i) { current = (i + slides.length) % slides.length; slides.forEach((s,n)=>s.classList.toggle('is-active',n===current)); dots.forEach((d,n)=>d.classList.toggle('is-active',n===current)); }
+  carousel.querySelector('.slide-prev').addEventListener('click',()=>show(current-1));
+  carousel.querySelector('.slide-next').addEventListener('click',()=>show(current+1));
+  let startX = null;
+  const track = carousel.querySelector('.slides-track');
+  track.addEventListener('touchstart',e=>{startX=e.changedTouches[0].clientX},{passive:true});
+  track.addEventListener('touchend',e=>{if(startX===null)return;const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)show(current+(dx<0?1:-1));startX=null},{passive:true});
+})();
+</script>
 </body>
 </html>

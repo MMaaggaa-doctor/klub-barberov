@@ -27,9 +27,15 @@
       <label class="field"><span>Почта</span><input type="email" id="l-email" autocomplete="username" required></label>
       <label class="field"><span>Пароль</span><input type="password" id="l-pass" autocomplete="current-password" required></label>
       <button class="btn" type="submit">Войти</button>
-      <p class="form-msg" id="login-msg" role="status"></p>
-      <details class="adm-register"><summary>Первый вход? Создать администратора</summary><form id="register-form"><label class="field"><span>Почта</span><input type="email" id="r-email" required></label><label class="field"><span>Пароль (от 10 символов)</span><input type="password" id="r-pass" minlength="10" required></label><button class="btn" type="submit">Зарегистрироваться</button></form></details>
     </form>
+    <p class="form-msg" id="login-msg" role="status"></p>
+    <details class="adm-register"><summary>Первый вход? Создать администратора</summary>
+      <form id="register-form" novalidate>
+        <label class="field"><span>Почта</span><input type="email" id="r-email" autocomplete="email" required></label>
+        <label class="field"><span>Пароль (от 10 символов)</span><input type="password" id="r-pass" minlength="10" autocomplete="new-password" required></label>
+        <button class="btn" type="submit">Зарегистрироваться</button>
+      </form>
+    </details>
   </section>
 
   <section id="app" hidden>
