@@ -33,7 +33,7 @@
     var hero = $('.hero'); if (nav && hero) nav.classList.toggle('on-light', document.body.classList.contains('hl') && y < hero.offsetHeight - 80);
     lastY = y;
     if (mcta) {
-      var near = function (id) { var s = $(id); if (!s) return false; var r = s.getBoundingClientRect(); return r.top < window.innerHeight * .6 && r.bottom > 0; }; var nearPrice = near('#pricing') || near('#join');
+      var near = function (id) { var s = $(id); if (!s) return false; var r = s.getBoundingClientRect(); return r.top < window.innerHeight * .6 && r.bottom > 0; }; var nearPrice = near('#pricing') || near('#join') || near('.foot');
       mcta.classList.toggle('show', y > window.innerHeight * .8 && !nearPrice);
     }
   }
@@ -165,8 +165,9 @@
       strack.appendChild(im);
     });
     shotsBox.hidden = false;
+    var scr = shotsBox.closest('.phone-scr'); if (scr) scr.classList.add('has-shots');
     var demo = $('#chat-body'); if (demo) demo.hidden = true;
-    var note = $('#chat-note'); if (note) note.textContent = 'Реальные скриншоты из закрытого чата — листайте';
+    var note = $('#chat-note'); if (note) note.textContent = 'Скриншоты из закрытого чата Клуба — листайте';
     var cur = function () { return Math.round(strack.scrollLeft / strack.clientWidth); };
     var go = function (n) { n = Math.max(0, Math.min(shotList.length - 1, n)); strack.scrollTo({ left: n * strack.clientWidth, behavior: reduce ? 'auto' : 'smooth' }); };
     var upc = function () { scount.textContent = (cur() + 1) + ' / ' + shotList.length; };
@@ -236,7 +237,7 @@
     $$('img', pin).forEach(function (i) { if (!i.complete) i.addEventListener('load', function () { measure(); upd(); }); });
   }
 
-  /* ---------- LEAD FORM → MySQL Beget ---------- */
+  /* ---------- ЗАЯВКА С ФОРМЫ → api.php ---------- */
   var form = $('#lead-form'), msg = $('#form-msg');
   if (form) {
     var say = function (t, cls) { msg.textContent = t; msg.className = 'form-msg ' + (cls || ''); };
@@ -251,7 +252,8 @@
       if (Date.now() - last < 60000) return say('Заявка уже отправлена. Подождите минуту.', 'err');
       var btn = $('button[type=submit]', form); btn.disabled = true; say('Отправляем…');
       fetch((cfg.API_URL || './api.php') + '?action=lead', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-KB': '1' },
         body: JSON.stringify(Object.assign({ name: name, contact: contact, source: location.pathname }, window.KB ? KB.leadFields() : {}))
       }).then(function (r) {
         if (!r.ok) throw new Error(r.status);

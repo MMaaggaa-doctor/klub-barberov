@@ -75,7 +75,7 @@
     </div>
   </div>
   <div class="hero-vis">
-    <img class="hero-me" id="hero-me" src="./assets/img/teymur.jpg?v=3" alt="Теймур — основатель Клуба Барберов" width="1000" height="1000" fetchpriority="high" decoding="async">
+    <img class="hero-me" id="hero-me" src="./assets/img/teymur.jpg?v=4" alt="Теймур — основатель Клуба Барберов" width="1254" height="1254" fetchpriority="high" decoding="async">
     <i class="hero-slant" aria-hidden="true"></i>
   </div>
   <div class="vsl" id="vsl">
@@ -177,30 +177,6 @@
     </div>
   </div>
 </section>
-
-<!-- COMMUNITY SLIDES -->
-<section class="community-slides" id="community-slides">
-  <div class="wrap">
-    <div class="slides-head">
-      <span class="tag rv">Внутри клуба</span>
-      <h2><span class="mask" data-mask><span>Живое общение и полезные материалы</span></span></h2>
-      <p class="slides-intro">Общение, обратная связь и материалы для мастеров — в одном месте.</p>
-    </div>
-    <div class="community-carousel rv" aria-label="Слайд-шоу материалов клуба">
-      <button class="slide-arrow slide-prev" type="button" aria-label="Предыдущий слайд">‹</button>
-      <div class="slides-track">
-        <figure class="community-slide is-active"><img src="./assets/slideshow/chat-1.jpg" alt="Материалы и общение участников клуба" loading="lazy"><figcaption>Материалы и общение</figcaption></figure>
-        <figure class="community-slide"><img src="./assets/slideshow/chat-2.jpg" alt="Обсуждение контента и продвижения" loading="lazy"><figcaption>Контент и продвижение</figcaption></figure>
-        <figure class="community-slide"><img src="./assets/slideshow/chat-3.jpg" alt="Обратная связь участников" loading="lazy"><figcaption>Обратная связь</figcaption></figure>
-        <figure class="community-slide"><img src="./assets/slideshow/chat-4.jpg" alt="Рекомендации по созданию видео и субтитров" loading="lazy"><figcaption>Видео и субтитры</figcaption></figure>
-        <figure class="community-slide"><img src="./assets/slideshow/chat-5.jpg" alt="Отзывы и поддержка сообщества" loading="lazy"><figcaption>Поддержка сообщества</figcaption></figure>
-      </div>
-      <button class="slide-arrow slide-next" type="button" aria-label="Следующий слайд">›</button>
-      <div class="slide-dots" aria-label="Выбрать слайд"></div>
-    </div>
-  </div>
-</section>
-
 
 <!-- CALCULATOR -->
 <section class="calc" id="calc">
@@ -412,7 +388,7 @@
 
 </main>
 
-<footer class="foot">
+<footer class="foot"><a class="foot-lock" href="./admin.html" rel="nofollow" aria-label="Служебный вход"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></a>
   <div class="wrap">
     <a href="#top" class="logo" title="В начало страницы">Клуб Барберов</a>
     <nav aria-label="Нижняя навигация">
@@ -420,7 +396,7 @@
       <a href="#pricing" title="Тарифы">Тарифы</a>
       <a href="https://t.me/teymur_barber/4397" target="_blank" rel="noopener noreferrer" title="Telegram Клуба" data-goal="cta_click" data-link="join">Telegram</a>
     </nav>
-    <p>Клуб работает на ваш успех · © 2026 Клуб Барберов <a class="admin-secret" href="./admin.html" aria-label="Вход для администратора" title="">🔒</a></p>
+    <p>Клуб работает на ваш успех · © 2026 Клуб Барберов</p>
   </div>
 </footer>
 
@@ -429,29 +405,5 @@
 <script src="./js/config.js"></script>
 <script src="./js/track.js"></script>
 <script src="./js/main.js" defer></script>
-
-<script>
-(() => {
-  const carousel = document.querySelector('.community-carousel');
-  if (!carousel) return;
-  const slides = [...carousel.querySelectorAll('.community-slide')];
-  const dotsWrap = carousel.querySelector('.slide-dots');
-  let current = 0;
-  slides.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'slide-dot' + (i === 0 ? ' is-active' : '');
-    dot.type = 'button'; dot.setAttribute('aria-label', 'Слайд ' + (i + 1));
-    dot.addEventListener('click', () => show(i)); dotsWrap.appendChild(dot);
-  });
-  const dots = [...dotsWrap.querySelectorAll('.slide-dot')];
-  function show(i) { current = (i + slides.length) % slides.length; slides.forEach((s,n)=>s.classList.toggle('is-active',n===current)); dots.forEach((d,n)=>d.classList.toggle('is-active',n===current)); }
-  carousel.querySelector('.slide-prev').addEventListener('click',()=>show(current-1));
-  carousel.querySelector('.slide-next').addEventListener('click',()=>show(current+1));
-  let startX = null;
-  const track = carousel.querySelector('.slides-track');
-  track.addEventListener('touchstart',e=>{startX=e.changedTouches[0].clientX},{passive:true});
-  track.addEventListener('touchend',e=>{if(startX===null)return;const dx=e.changedTouches[0].clientX-startX;if(Math.abs(dx)>40)show(current+(dx<0?1:-1));startX=null},{passive:true});
-})();
-</script>
 </body>
 </html>

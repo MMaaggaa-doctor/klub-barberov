@@ -84,3 +84,8 @@
 .pay-b:hover{border-color:var(--y)}
 @media (max-width:900px){.adm-pay{grid-template-columns:1fr 1fr}.adm-pay .p-wide{grid-column:span 2}.fstep{grid-template-columns:1fr auto}.fstep .fbar{grid-column:1/-1;order:3}}
 @media (max-width:560px){.adm-pay{grid-template-columns:1fr}.adm-pay .p-wide{grid-column:auto}}
+
+.adm-link{display:block;margin:1rem auto 0;min-height:44px;background:none;border:0;color:var(--grey);font-size:.82rem;text-decoration:underline;text-underline-offset:3px}
+.adm-link:hover{color:var(--y)}
+
+.adm-sum-link{cursor:pointer;color:var(--y);font-size:.9rem;min-height:44px;display:flex;align-items:center}

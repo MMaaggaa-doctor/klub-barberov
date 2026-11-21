@@ -5,7 +5,6 @@
   var cfg = window.APP_CONFIG || {};
   var API = cfg.API_URL || './api.php';
   var PCT = +cfg.REWARD_PERCENT || 25;
-  var SKEY = 'kb_admin_session';
   var S = { days: 30, tab: 'partners', partners: [], stats: {}, daily: {}, funnel: [], leads: [], payments: [] };
   var PLAN = { month: 'Месяц', year: 'Год', trial: 'Пробная неделя', other: 'Другое' };
 
@@ -44,35 +43,50 @@
   function since() { return S.days === 'all' ? null : new Date(Date.now() - S.days * 864e5); }
   function sourceLabel(s) { return (!s || s === 'direct') ? 'прямой / не определён' : s; }
 
-  /* ---------- сессия и запросы ---------- */
-  function getSession() { try { return JSON.parse(localStorage.getItem(SKEY) || 'null'); } catch (e) { return null; } }
-  function setSession(s) { if (s) localStorage.setItem(SKEY, JSON.stringify(s)); else localStorage.removeItem(SKEY); }
-  function auth(path, payload) {
-    var mode = path.indexOf('token?grant_type=password') === 0 ? 'login' : 'login';
-    return fetch(API + '?action=' + mode, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Ошибка входа');return j;});});
+  /* ---------- запросы к api.php ---------- */
+  function call(action, method, query, body) {
+    var url = API + '?action=' + encodeURIComponent(action);
+    Object.keys(query || {}).forEach(function (k) { url += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(query[k]); });
+    var opts = { method: method, headers: { 'X-KB': '1' }, credentials: 'same-origin' };
+    if (method !== 'GET' && method !== 'HEAD') { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body || {}); }
+    return fetch(url, opts).then(function (r) {
+      return r.text().then(function (t) {
+        var j = null; try { j = t ? JSON.parse(t) : null; } catch (e) {}
+        if (!r.ok) { var e = new Error((j && j.error) || ('Ошибка ' + r.status)); e.status = r.status; e.code = j && j.code; throw e; }
+        return j;
+      });
+    });
   }
-  function store() { setSession({ logged: true }); }
-  function refresh() { return Promise.resolve(getSession()); }
+  /* Привычные адреса вида partners?id=eq.5 переводятся в запросы к api.php */
   function api(path, opts) {
-    opts=opts||{}; var bits=path.split('/'); var url;
-    if(bits[0]==='rpc') url=API+'?action=rpc&name='+encodeURIComponent(bits[1]);
-    else url=API+'?path='+encodeURIComponent(path);
-    return fetch(url,{method:opts.method||'GET',headers:{'Content-Type':'application/json'},body:opts.body?JSON.stringify(opts.body):undefined}).then(function(r){return r.json().then(function(j){if(!r.ok){var e=new Error(j.error||('Ошибка '+r.status));e.status=r.status;throw e;}return j;});});
+    opts = opts || {};
+    var method = (opts.method || 'GET').toUpperCase(), parts = path.split('?'), head = parts[0], q = new URLSearchParams(parts[1] || ''), query = {};
+    if (head.indexOf('rpc/') === 0) { query.name = head.slice(4); return call('stats', 'POST', query, opts.body); }
+    var id = q.get('id'); if (id) query.id = id.replace(/^eq\./, '');
+    var since = q.get('created_at') || q.get('paid_at'); if (since) query.since = since.replace(/^gte\./, '');
+    if (q.get('limit')) query.limit = q.get('limit');
+    return call(head, method, query, opts.body);
   }
   function fail(e) {
-    if (/Нет входа|no session|JWT|expired/i.test(e.message)) { setSession(null); showLogin('Войдите заново'); return; }
+    if (e.status === 401) { showAuth('Войдите заново'); return; }
     msg('#global-msg', 'Ошибка: ' + e.message, 'err');
   }
 
   /* ---------- экраны ---------- */
-  function showLogin(text) {
-    show('#app', false); show('#login-box', true); show('#logout', false);
-    if (text) msg('#login-msg', text, 'err');
+  function hideAuth() { show('#login-box', false); show('#signup-box', false); }
+  function showLogin(text, cls) {
+    show('#app', false); hideAuth(); show('#login-box', true); show('#logout', false);
+    if (text) msg('#login-msg', text, cls || 'err');
   }
-  function showApp() {
-    show('#login-box', false); show('#app', true); show('#logout', true);
-    api('rpc/is_admin', { method: 'POST', body: {} }).then(function (r) { show('#not-admin', r !== true); }).catch(fail);
-    loadTab();
+  function showSignup() { show('#app', false); hideAuth(); show('#signup-box', true); show('#logout', false); }
+  function showApp() { hideAuth(); show('#app', true); show('#logout', true); show('#not-admin', false); loadTab(); }
+  /* Если администратора ещё нет — предлагаем зарегистрироваться первым, иначе обычный вход */
+  function showAuth(note) {
+    call('status', 'GET').then(function (s) {
+      if (s && s.logged) showApp();
+      else if (s && s.first) showSignup();
+      else showLogin(note);
+    }).catch(function (e) { showLogin('Сервер недоступен: ' + e.message + '. Проверьте config.php и импорт database.sql.'); });
   }
   function setTab(t) {
     S.tab = t;
@@ -263,18 +277,36 @@
 
   /* ---------- события ---------- */
   function init() {
-    fetch(API+'?action=status').then(function(r){return r.json();}).then(function(st){ if(st.first) show('#register-form',true); }).catch(function(){show('#no-cfg',true);});
-
-    var rf=$('#register-form'); if(rf) rf.addEventListener('submit',function(e){e.preventDefault();var email=$('#r-email').value.trim(),password=$('#r-pass').value;if(password.length<10)return msg('#login-msg','Пароль должен содержать минимум 10 символов.','err');msg('#login-msg','Создаём администратора…');fetch(API+'?action=register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,password:password})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Ошибка регистрации');return j;});}).then(function(){store();showApp();}).catch(function(err){msg('#login-msg',err.message,'err');});});
     $('#login-form').addEventListener('submit', function (e) {
       e.preventDefault();
       var email = $('#l-email').value.trim(), pass = $('#l-pass').value;
       if (!email || !pass) return msg('#login-msg', 'Введите почту и пароль.', 'err');
       msg('#login-msg', 'Входим…');
-      auth('token?grant_type=password', { email: email, password: pass }).then(function (j) { store(j); $('#l-pass').value = ''; msg('#login-msg', ''); showApp(); })
-        .catch(function () { msg('#login-msg', 'Неверная почта или пароль.', 'err'); });
+      call('login', 'POST', {}, { email: email, password: pass }).then(function () { $('#l-pass').value = ''; msg('#login-msg', ''); showApp(); })
+        .catch(function (err) { msg('#login-msg', err.status === 429 ? err.message : 'Неверная почта или пароль.', 'err'); });
     });
-    $('#logout').addEventListener('click', function () { fetch(API+'?action=logout',{method:'POST'}); setSession(null); showLogin(); });
+    $('#signup-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var email = $('#s-email').value.trim(), p1 = $('#s-pass').value, p2 = $('#s-pass2').value;
+      if (!email) return msg('#signup-msg', 'Введите почту.', 'err');
+      if (p1.length < 10) return msg('#signup-msg', 'Пароль: минимум 10 символов.', 'err');
+      if (p1 !== p2) return msg('#signup-msg', 'Пароли не совпадают.', 'err');
+      msg('#signup-msg', 'Создаём доступ…');
+      call('register', 'POST', {}, { email: email, password: p1 }).then(function () { msg('#signup-msg', ''); showApp(); })
+        .catch(function (err) {
+          if (err.status === 403) { showLogin('Администратор уже создан, регистрация закрыта. Войдите.'); }
+          else msg('#signup-msg', 'Не удалось зарегистрироваться: ' + err.message, 'err');
+        });
+    });
+    $('#logout').addEventListener('click', function () { call('logout', 'POST').catch(function () {}).then(function () { showAuth(); }); });
+    $('#pw-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var o = $('#pw-old').value, n1 = $('#pw-new').value, n2 = $('#pw-new2').value;
+      if (n1.length < 10) return msg('#pw-msg', 'Новый пароль: минимум 10 символов.', 'err');
+      if (n1 !== n2) return msg('#pw-msg', 'Пароли не совпадают.', 'err');
+      call('change_password', 'POST', {}, { old: o, new: n1 }).then(function () { msg('#pw-msg', 'Пароль изменён.', 'ok'); $('#pw-old').value = $('#pw-new').value = $('#pw-new2').value = ''; })
+        .catch(function (err) { msg('#pw-msg', err.message, 'err'); });
+    });
     $$('.adm-tabs button').forEach(function (b) { b.addEventListener('click', function () { setTab(b.dataset.tab); }); });
     $$('#range button').forEach(function (b) {
       b.addEventListener('click', function () {
@@ -299,6 +331,7 @@
         msg('#new-msg', 'Готово.', 'ok'); fresh(r || [{ name: name, slug: slug }]);
         nName.value = ''; nSlug.value = ''; touched = false; loadPartners();
       }).catch(function (err) {
+        if (err.status === 401) return fail(err);
         msg('#new-msg', (err.status === 409 || err.code === '23505') ? 'Такая метка уже есть. Выберите другую.' : 'Не удалось создать: ' + err.message, 'err');
       });
     });
@@ -319,11 +352,11 @@
       var sel = $('#p-source').value, source = sel === '__custom' ? slugify($('#p-custom').value) : sel;
       var amount = parseFloat($('#p-amount').value);
       if (!(amount >= 0)) return msg('#pay-msg', 'Введите сумму.', 'err');
-      var row = { source: source || null, plan: $('#p-plan').value, amount: amount, comment: $('#p-comment').value.trim() || null };
+      var row = { source: source || '', plan: $('#p-plan').value, amount: amount, comment: $('#p-comment').value.trim() };
       if ($('#p-date').value) row.paid_at = $('#p-date').value;
       if (this.dataset.lead) row.lead_id = +this.dataset.lead;
       msg('#pay-msg', 'Сохраняем…');
-      api('payments', { method: 'POST', body: row, headers: { Prefer: 'return=minimal' } }).then(function () {
+      api('payments', { method: 'POST', body: row }).then(function () {
         msg('#pay-msg', 'Оплата добавлена.', 'ok'); $('#p-amount').value = ''; $('#p-comment').value = ''; delete $('#pay-form').dataset.lead; loadPayments();
       }).catch(function (err) { msg('#pay-msg', 'Не удалось сохранить: ' + err.message, 'err'); });
     });
@@ -331,7 +364,7 @@
     ['#u-base', '#u-source', '#u-medium', '#u-campaign', '#u-content'].forEach(function (id) { $(id).addEventListener('input', buildUtm); });
     $('#u-copy').addEventListener('click', function () { copy($('#u-out').textContent, this); });
 
-    if (getSession()) showApp(); else showLogin();
+    showAuth();
   }
   init();
 })();

@@ -77,7 +77,7 @@ section[id]{scroll-margin-top:5rem}
 .hero-btns{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.4rem;opacity:0;animation:fade .9s .75s var(--ease) forwards}
 @keyframes fade{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
 .hero-vis{position:relative;overflow:hidden;background:#f6f6f7}
-.hero-slant{position:absolute;left:0;top:0;bottom:0;width:8%;background:var(--ink2);clip-path:polygon(0 0,100% 0,0 100%);z-index:2}
+.hero-slant{position:absolute;left:-3px;top:0;bottom:0;width:calc(8% + 3px);background:var(--ink2);clip-path:polygon(0 0,100% 0,0 100%);z-index:2}
 .hero-vis.no-photo{background:radial-gradient(circle at 60% 40%,#2a230a,#121212 70%)}
 .hero-vis.no-photo::before{content:"КБ";position:absolute;inset:0;display:grid;place-items:center;font-size:clamp(5rem,16vw,12rem);color:rgba(243,204,14,.25)}
 .hero-vis::after{content:'';position:absolute;inset:auto 0 0 0;height:4px;background:var(--grad);z-index:2}
@@ -373,7 +373,7 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .final .m3d{width:min(16vw,220px);left:2vw;bottom:2rem;opacity:.95}
 
 /* FOOTER */
-.foot{padding:3rem 0 4rem;background:var(--ink);border-top:1px solid var(--line)}
+.foot{position:relative;padding:3rem 0 4rem;background:var(--ink);border-top:1px solid var(--line)}
 .foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap}
 .foot p,.foot a{font-size:.78rem;color:var(--grey);text-decoration:none}
 .foot a:hover{color:var(--y)}
@@ -529,5 +529,14 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .nav.on-light.open .burger span{background:transparent}
 @media (max-width:768px){.hl .hero-vis{background:#fff}.nav.on-light .nav-links{background:rgba(255,255,255,.98)}.nav.on-light .nav-links a{border-top-color:rgba(13,13,13,.08)}}
 
-/* Неприметный вход в панель администратора */
-.admin-secret{display:inline-block;margin-left:8px;font-size:12px;opacity:.13;text-decoration:none;transition:opacity .2s}.admin-secret:hover,.admin-secret:focus{opacity:.75}
+/* незаметный служебный вход в самом низу страницы */
+.foot-lock{position:absolute;right:max(2vw,8px);bottom:6px;width:44px;height:44px;display:grid;place-items:center;opacity:.16;transition:opacity .3s}
+.foot-lock svg{width:15px;height:15px;fill:none;stroke:var(--grey);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.foot-lock:hover,.foot-lock:focus-visible{opacity:.7}
+
+/* настоящие скриншоты чата внутри телефона */
+.phone-scr.has-shots{background:#000}
+.phone-scr.has-shots .phone-top{display:none}
+.phone-scr.has-shots .phone-shots,.phone-scr.has-shots .shots-track,.phone-scr.has-shots .shots-track img{background:#000}
+.phone-scr.has-shots .shots-track img{object-position:center center}
+.phone-scr.has-shots .shots-ui{background:#0d0d0d}

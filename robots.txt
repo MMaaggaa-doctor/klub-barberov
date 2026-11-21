@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Disallow: /api.php
 Sitemap: https://YOUR-SITE.netlify.app/sitemap.xml

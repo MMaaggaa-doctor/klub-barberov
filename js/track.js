@@ -1,7 +1,7 @@
 /* ============================================================
    Аналитика и отслеживание источников.
    - UTM-метки и партнёрская метка ?ref= запоминаются на 30 дней;
-   - каждое ключевое действие уходит в Supabase (таблица events) и в Яндекс Метрику;
+   - каждое ключевое действие уходит в Supabase (таблица events в MySQL) и в Яндекс Метрику;
    - ссылки на Telegram-бота получают ?start=источник-идентификатор.
    Цели и их названия описаны в README.
    ============================================================ */
@@ -13,6 +13,7 @@
   var REF_RE = /^[a-z0-9_-]{2,40}$/;
   var DAY = 864e5;
   var isBot = !!navigator.webdriver || /bot|crawl|spider|slurp|facebookexternalhit|bingpreview|headless/i.test(navigator.userAgent);
+  var API = cfg.API_URL || './api.php';
   var hasDb = true;
 
   function ls(k, v) {
@@ -69,9 +70,15 @@
   KB.source = function () { var a = KB.attr(); return a.ref || a.utm_source || null; };
 
   /* ---------- отправка событий ---------- */
-  function post(table, body) {
+  function post(action, body) {
     if (!hasDb) return;
-    try { fetch((cfg.API_URL || './api.php') + '?action=event', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).catch(function () {}); } catch (e) {}
+    try {
+      fetch(API + '?action=' + action, {
+        method: 'POST', keepalive: true,
+        headers: { 'Content-Type': 'application/json', 'X-KB': '1' },
+        body: JSON.stringify(body)
+      }).catch(function () {});
+    } catch (e) {}
   }
   KB.track = function (event, extra) {
     if (isBot) return;
@@ -85,7 +92,7 @@
       path: location.pathname.slice(0, 200), referrer: extra.referrer || null,
       meta: extra.target ? { target: String(extra.target).slice(0, 80) } : null
     };
-    post('events', row);
+    post('event', row);
     try {
       if (window.ym && cfg.METRIKA_ID) ym(+cfg.METRIKA_ID, 'reachGoal', event, { plan: extra.plan || '', target: extra.target || '', source: a.ref || a.utm_source || '' });
     } catch (e) {}

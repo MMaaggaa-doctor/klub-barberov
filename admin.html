@@ -21,25 +21,30 @@
 
 <main class="adm-main">
 
+  <section class="adm-card adm-login" id="signup-box" hidden>
+    <h1>Первый запуск</h1>
+    <p class="adm-note" style="padding:0 0 1rem">Тот, кто зарегистрируется первым, станет администратором и сам задаст пароль. После этого регистрация закрывается для всех остальных.</p>
+    <form id="signup-form" novalidate>
+      <label class="field"><span>Почта</span><input type="email" id="s-email" autocomplete="username" required></label>
+      <label class="field"><span>Придумайте пароль (минимум 10 символов)</span><input type="password" id="s-pass" autocomplete="new-password" minlength="10" required></label>
+      <label class="field"><span>Повторите пароль</span><input type="password" id="s-pass2" autocomplete="new-password" minlength="10" required></label>
+      <button class="btn" type="submit">Создать доступ</button>
+      <p class="form-msg" id="signup-msg" role="status"></p>
+    </form>
+  </section>
+
   <section class="adm-card adm-login" id="login-box" hidden>
     <h1>Вход</h1>
     <form id="login-form" novalidate>
       <label class="field"><span>Почта</span><input type="email" id="l-email" autocomplete="username" required></label>
       <label class="field"><span>Пароль</span><input type="password" id="l-pass" autocomplete="current-password" required></label>
       <button class="btn" type="submit">Войти</button>
+      <p class="form-msg" id="login-msg" role="status"></p>
     </form>
-    <p class="form-msg" id="login-msg" role="status"></p>
-    <details class="adm-register"><summary>Первый вход? Создать администратора</summary>
-      <form id="register-form" novalidate>
-        <label class="field"><span>Почта</span><input type="email" id="r-email" autocomplete="email" required></label>
-        <label class="field"><span>Пароль (от 10 символов)</span><input type="password" id="r-pass" minlength="10" autocomplete="new-password" required></label>
-        <button class="btn" type="submit">Зарегистрироваться</button>
-      </form>
-    </details>
   </section>
 
   <section id="app" hidden>
-    <p class="adm-warn" id="not-admin" hidden>У этой учётной записи нет прав администратора.</p>
+    <p class="adm-warn" id="not-admin" hidden>Нет доступа администратора.</p>
 
     <div class="adm-bar">
       <nav class="adm-tabs" role="tablist" aria-label="Разделы">
@@ -158,9 +163,20 @@
         <div class="adm-fresh"><code id="u-out"></code><button type="button" class="btn btn-ghost" id="u-copy">Скопировать</button></div>
       </div>
     </div>
+
+    <div class="adm-card" style="margin-top:2rem">
+      <details><summary class="adm-sum-link">Сменить пароль</summary>
+        <form id="pw-form" class="adm-pay" novalidate style="margin-top:1rem">
+          <label class="field"><span>Текущий пароль</span><input type="password" id="pw-old" autocomplete="current-password"></label>
+          <label class="field"><span>Новый пароль (минимум 10 символов)</span><input type="password" id="pw-new" autocomplete="new-password"></label>
+          <label class="field"><span>Повторите новый пароль</span><input type="password" id="pw-new2" autocomplete="new-password"></label>
+          <button class="btn" type="submit">Сохранить пароль</button>
+        </form>
+        <p class="form-msg" id="pw-msg" role="status"></p>
+      </details>
+    </div>
   </section>
 
-  <p class="adm-warn" id="no-cfg" hidden>Не удалось подключиться к серверу. Проверьте config.php и базу MySQL на Beget.</p>
 </main>
 
 <script src="./js/config.js"></script>
